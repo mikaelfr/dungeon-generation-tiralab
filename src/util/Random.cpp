@@ -16,6 +16,11 @@ void Random::SetSeed(int seed)
 	}
 }
 
+float Random::GetRandomValue()
+{
+	return (float)GetRandomNumber() / d;
+}
+
 
 int Random::GetRandomNumber()
 {

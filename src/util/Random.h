@@ -7,6 +7,8 @@ public:
 	// Prepares mt for twisting
 	static void SetSeed(int seed);
 
+	static float GetRandomValue();
+
 private:
 	// Default parameters for MT19937
 	static const int w = 32;
