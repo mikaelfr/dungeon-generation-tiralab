@@ -1,5 +1,8 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 struct Vec2i
 {
 	Vec2i()
@@ -12,6 +15,16 @@ struct Vec2i
 	{
 		this->x = x;
 		this->y = y;
+	}
+
+	Vec2i Normalized() const
+	{
+		return Vec2i((int)(x / Length()), (int)(y / Length()));
+	}
+
+	float Length() const
+	{
+		return sqrtf((float)(x * x + y * y));
 	}
 
 	int x;

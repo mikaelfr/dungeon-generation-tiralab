@@ -26,6 +26,9 @@ public:
 	iterator end() { return &data[numElements]; }
 	const_iterator end() const { return &data[numElements]; }
 
+	T operator[](int i) const { return data[i]; }
+	T& operator[](int i) { return data[i]; }
+
 private:
 	const int initialSize = 8;
 	int numElements = 0;

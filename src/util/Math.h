@@ -7,6 +7,8 @@ class Math
 public:
 	static Vec2i GetRandomPointInCircle(int radius);
 
+	static inline int Abs(int a) { return (a < 0) ? -a : a; }
+	static inline float Abs(float a) { return (a < 0) ? -a : a; }
 	static int Min(int a, int b);
 	static int Max(int a, int b);
 	static float Min(float a, float b);

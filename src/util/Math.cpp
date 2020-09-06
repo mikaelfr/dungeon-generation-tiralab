@@ -11,6 +11,7 @@ Vec2i Math::GetRandomPointInCircle(int radius)
 	return Vec2i((int)(radius * r * cos(t)), (int)(radius * r * sin(t)));
 }
 
+
 inline int Math::Min(int a, int b)
 {
 	return (a > b) ? b : a;
