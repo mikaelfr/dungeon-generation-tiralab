@@ -3,7 +3,18 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("dungeon-generation")
+project("dungeon_generation")
+
+# Enable testing
+include(CTest)
+
+# Include doctest helper function
+include("cmake/doctest.cmake")
 
 # Include sub-projects.
-add_subdirectory ("src")
+add_subdirectory("src")
+
+# If testing enabled, include tests folder
+if (BUILD_TESTING)
+    add_subdirectory("tests")
+endif()

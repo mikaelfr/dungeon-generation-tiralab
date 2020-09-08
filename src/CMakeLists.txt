@@ -3,9 +3,9 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-file(GLOB_RECURSE SOURCES *.h *.cpp)
+# Include actual sources
+add_subdirectory("dungeon_generation")
 
-# Add source to this project's executable.
-add_executable (dungeon-generation ${SOURCES})
-
-# TODO: Add tests and install targets if needed.
+# Add main executable target and link sources
+add_executable (${PROJECT_NAME} dungeon_generation.h dungeon_generation.cpp)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_lib)
