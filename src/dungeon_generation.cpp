@@ -5,18 +5,16 @@
 #include "dungeon_generation/util/Math.h"
 #include "dungeon_generation/util/Random.h"
 
-using namespace std;
-
 int main()
 {
 	Random::SetSeed(0xBEEF);
 
 	for (int i = 0; i < 10; i++)
 	{
-		cout << Random::GetRandomValue() << endl;
+		std::cout << Random::GetRandomValue() << std::endl;
 	}
 
 	int a;
-	cin >> a;
+	std::cin >> a;
 	return 0;
 }
