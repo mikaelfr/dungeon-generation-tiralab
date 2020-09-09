@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <iostream>
+#include "../util/Memory.h"
 
 template <typename T>
 class Array
@@ -48,7 +49,7 @@ private:
 template<typename T>
 Array<T>::Array()
 {
-	data = new[initialSize];
+	data = new T[initialSize];
 	dataLength = initialSize;
 }
 
@@ -105,7 +106,7 @@ void Array<T>::Resize(int newSize)
 
 	T* newArray = new T[newSize];
 
-	if (!memcpy_s(newArray, newSize * sizeof(T), data, numElements * sizeof(T)))
+	if (!Memory::MemCpy(newArray, newSize * sizeof(T), data, numElements * sizeof(T)))
 	{
 		std::cerr << "Couldn't copy to new array when resizing." << std::endl;
 		return;
@@ -125,13 +126,13 @@ T* Array<T>::MergeSort(T* data, int length, ComparisonFunction func)
 	T* left = new T[halfPoint];
 	T* right = new T[length - halfPoint];
 
-	if (!memcpy_s(left, halfPoint * sizeof(T), data, halfPoint * sizeof(T)))
+	if (!Memory::MemCpy(left, halfPoint * sizeof(T), data, halfPoint * sizeof(T)))
 	{
 		std::cerr << "Couldn't copy left array" << std::endl;
 		return nullptr;
 	}
 
-	if (!memcpy_s(right, (length - halfPoint) * sizeof(T), data + halfPoint, (length - halfPoint) * sizeof(T)))
+	if (!Memory::MemCpy(right, (length - halfPoint) * sizeof(T), data + halfPoint, (length - halfPoint) * sizeof(T)))
 	{
 		std::cerr << "Couldn't copy right array" << std::endl;
 		return nullptr;
@@ -171,13 +172,13 @@ T* Array<T>::Merge(T* left, int leftLen, T* right, int rightLen, ComparisonFunct
 	}
 
 	// Insert the rest into result array
-	if (!memcpy_s(result + resi, (leftLen + rightLen - resi) * sizeof(T), left + li, (leftLen - li) * sizeof(T)))
+	if (!Memory::MemCpy(result + resi, (leftLen + rightLen - resi) * sizeof(T), left + li, (leftLen - li) * sizeof(T)))
 	{
 		std::cerr << "Couldn't copy left array" << std::endl;
 		return nullptr;
 	}
 
-	if (!memcpy_s(result + resi, (leftLen + rightLen - resi) * sizeof(T), right + ri, (rightLen - ri) * sizeof(T)))
+	if (!Memory::MemCpy(result + resi, (leftLen + rightLen - resi) * sizeof(T), right + ri, (rightLen - ri) * sizeof(T)))
 	{
 		std::cerr << "Couldn't copy right array" << std::endl;
 		return nullptr;
