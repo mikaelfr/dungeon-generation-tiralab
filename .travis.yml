@@ -1,12 +1,12 @@
 language: cpp
 
 os: linux
-dist: trusty
+dist: focal
 
 env:
   global:
     # Ubuntu version
-    - LINUX_DIST=trusty
+    - LINUX_DIST=focal
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     # Global build options and C++ flags
     - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow -std:c++17"
@@ -17,14 +17,14 @@ env:
 jobs:
   include:
     - os: linux
-      dist: trusty
+      dist: focal
       compiler: gcc
       addons:
        apt:
          packages: &precise_latest_boost_packages
-           - gcc-10.2
-           - g++-10.2
-           - clang-10.0
+           - gcc-10
+           - g++-10
+           - clang-10
            - valgrind
            # Misc
            - python-yaml
@@ -40,7 +40,7 @@ before_install:
     - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 
 install:
-    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-10.0" CC="clang-10.0"; fi
+    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-10" CC="clang-10"; fi
     - echo ${PATH}
     - echo ${CXX}
     - ${CXX} --version
