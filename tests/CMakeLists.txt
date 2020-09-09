@@ -21,7 +21,11 @@ doctest_discover_tests(${PROJECT_NAME}_test)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 	include(CodeCoverage)
-	setup_target_for_coverage_lcov(NAME ${PROJECT_NAME}_coverage EXECUTABLE ${PROJECT_NAME}_test)
+	setup_target_for_coverage_lcov(
+		NAME ${PROJECT_NAME}_coverage 
+		EXECUTABLE ${PROJECT_NAME}_test
+		EXCLUDE "tests/*" "libs/*" "src/dungeon_generation.cpp" "src/dungeon_generation.h"
+	)
 
 	SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
