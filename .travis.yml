@@ -64,4 +64,4 @@ script:
      - ctest
      
 after_success:
-    - codecov -t c8eb0458-46da-4642-8d17-841268780ec4 -X gcov
+    - codecov
