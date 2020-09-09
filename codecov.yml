@@ -1,0 +1,6 @@
+# Ignore specific files
+ignore:
+  - "tests/**/*"
+  - "libs/**/*"
+  - "src/dungeon_generation.cpp"
+  - "src/dungeon_generation.h"
