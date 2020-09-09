@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project("dungeon_generation")
+project("dungeon_generator")
 
 # Enable testing
 include(CTest)
