@@ -9,7 +9,7 @@ env:
     - LINUX_DIST=trusty
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     # Global build options and C++ flags
-    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow"
+    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow -std:c++17"
     # Misc
     - RUN_TESTS=true
     - COVERAGE=false
@@ -22,10 +22,9 @@ jobs:
       addons:
        apt:
          packages: &precise_latest_boost_packages
-           - gcc-4.8
-           - g++-4.8
-           #- gcov-4.9
-           - clang-3.7
+           - gcc-10.2
+           - g++-10.2
+           - clang-10.0
            - valgrind
            # Misc
            - python-yaml
@@ -41,7 +40,7 @@ before_install:
     - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 
 install:
-    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
+    - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-10.0" CC="clang-10.0"; fi
     - echo ${PATH}
     - echo ${CXX}
     - ${CXX} --version
