@@ -18,3 +18,11 @@ target_include_directories(${PROJECT_NAME}_test PUBLIC "../src/")
 
 # Dynamically discover and add tests
 doctest_discover_tests(${PROJECT_NAME}_test)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+	include(CodeCoverage)
+	setup_target_for_coverage(${PROJECT_NAME}_coverage ${PROJECT_NAME}_test coverage)
+
+	SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+endif()

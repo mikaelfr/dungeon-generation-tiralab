@@ -5,11 +5,14 @@ cmake_minimum_required (VERSION 3.8)
 
 project("dungeon_generator")
 
+# Set CMake module path
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 # Enable testing
 include(CTest)
 
 # Include doctest helper function
-include("cmake/doctest.cmake")
+include(doctest)
 
 # Include sub-projects.
 add_subdirectory("src")
