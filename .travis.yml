@@ -64,4 +64,4 @@ script:
      - ctest
      
 after_success:
-    - codecov
+    - codecov -X gcov
