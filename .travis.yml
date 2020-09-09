@@ -1,5 +1,8 @@
 language: cpp
 
+os: linux
+dist: trusty
+
 env:
   global:
     # Ubuntu version
@@ -11,11 +14,10 @@ env:
     - RUN_TESTS=true
     - COVERAGE=false
 
-matrix:
+jobs:
   include:
     - os: linux
       dist: trusty
-      sudo: true
       compiler: gcc
       addons:
        apt:
