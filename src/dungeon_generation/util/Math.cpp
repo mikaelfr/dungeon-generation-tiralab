@@ -31,12 +31,3 @@ inline float Math::Max(float a, float b)
 {
 	return (a > b) ? a : b;
 }
-
-
-Math::Math()
-{
-}
-
-Math::~Math()
-{
-}

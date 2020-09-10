@@ -16,6 +16,6 @@ public:
 
 private:
 	// Prevent creation of instances
-	Math();
-	~Math();
+	Math() {}
+	~Math() {}
 };

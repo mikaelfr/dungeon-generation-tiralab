@@ -140,14 +140,12 @@ T* Array<T>::MergeSort(T* data, int length, ComparisonFunction func)
 
 	// Recursively sort both sides
 	T* mergedLeft = MergeSort(left, halfPoint, func);
-	delete[] left;
 	T* mergedRight = MergeSort(right, length - halfPoint, func);
-	delete[] right;
 
 	// Merge both sorted sides
 	T* merged = Merge(mergedLeft, halfPoint, mergedRight, length - halfPoint, func);
-	delete[] mergedLeft;
-	delete[] mergedRight;
+	delete[] left;
+	delete[] right;
 
 	return merged;
 }
