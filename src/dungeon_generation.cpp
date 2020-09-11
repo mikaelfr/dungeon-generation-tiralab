@@ -7,14 +7,14 @@
 
 int main()
 {
-	Random::SetSeed(0xBEEF);
+    Random::SetSeed(0xBEEF);
 
-	for (int i = 0; i < 10; i++)
-	{
-		std::cout << Random::GetRandomValue() << std::endl;
-	}
+    for (int i = 0; i < 10; i++)
+    {
+        std::cout << Random::GetRandomValue() << std::endl;
+    }
 
-	int a;
-	std::cin >> a;
-	return 0;
+    int a;
+    std::cin >> a;
+    return 0;
 }
