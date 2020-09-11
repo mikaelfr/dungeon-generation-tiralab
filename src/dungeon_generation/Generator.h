@@ -6,19 +6,18 @@
 class Generator
 {
 public:
-	Generator();
-	~Generator();
+    Generator();
+    ~Generator();
 
-	void Generate(int seed);
+    void Generate(int seed);
 
 private:
-	const int numRoomCandidates = 300;
-	const int circleRadius = 512;
+    const int numRoomCandidates = 300;
+    const int circleRadius = 512;
 
-	// Hold array here so it need not be passed around constantly
-	Array<Room> rooms;
+    // Hold array here so it need not be passed around constantly
+    Array<Room> rooms;
 
-	void GenerateRooms();
-	void SeparateRooms();
-
+    void GenerateRooms();
+    void SeparateRooms();
 };

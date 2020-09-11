@@ -5,28 +5,28 @@
 
 struct Vec2i
 {
-	Vec2i()
-	{
-		x = 0; 
-		y = 0;
-	}
+    Vec2i()
+    {
+        x = 0;
+        y = 0;
+    }
 
-	Vec2i(int x, int y)
-	{
-		this->x = x;
-		this->y = y;
-	}
+    Vec2i(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+    }
 
-	Vec2i Normalized() const
-	{
-		return Vec2i((int)(x / Length()), (int)(y / Length()));
-	}
+    Vec2i Normalized() const
+    {
+        return Vec2i((int)(x / Length()), (int)(y / Length()));
+    }
 
-	float Length() const
-	{
-		return sqrtf((float)(x * x + y * y));
-	}
+    float Length() const
+    {
+        return sqrtf((float)(x * x + y * y));
+    }
 
-	int x;
-	int y;
+    int x;
+    int y;
 };
