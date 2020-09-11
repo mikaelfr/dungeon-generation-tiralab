@@ -3,7 +3,8 @@
 #include "util/Math.h"
 #include "data/Tuple.h"
 
-Generator::Generator() : rooms(numRoomCandidates)
+Generator::Generator()
+    : rooms(numRoomCandidates)
 {
 }
 

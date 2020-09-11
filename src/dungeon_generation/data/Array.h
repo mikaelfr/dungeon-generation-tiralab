@@ -15,7 +15,7 @@ public:
     void Add(T value);
     int Size();
 
-    typedef int(*ComparisonFunction)(const T&, const T&);
+    typedef int (*ComparisonFunction)(const T&, const T&);
 
     // comparisonFunction should return >0 if right is higher than left
     void Sort(ComparisonFunction func);
@@ -46,28 +46,28 @@ private:
 
 // Template function definitions
 
-template<typename T>
+template <typename T>
 Array<T>::Array()
 {
     data = new T[initialSize];
     dataLength = initialSize;
 }
 
-template<typename T>
+template <typename T>
 Array<T>::Array(int initialSize)
 {
     data = new T[initialSize];
     dataLength = initialSize;
 }
 
-template<typename T>
+template <typename T>
 Array<T>::~Array()
 {
     if (data)
         delete[] data;
 }
 
-template<typename T>
+template <typename T>
 void Array<T>::Add(T value)
 {
     if (dataLength <= numElements)
@@ -78,13 +78,13 @@ void Array<T>::Add(T value)
     data[numElements++] = value;
 }
 
-template<typename T>
+template <typename T>
 int Array<T>::Size()
 {
     return numElements;
 }
 
-template<typename T>
+template <typename T>
 void Array<T>::Sort(ComparisonFunction func)
 {
     T* sortedArray = MergeSort(data, numElements, func);
@@ -95,7 +95,7 @@ void Array<T>::Sort(ComparisonFunction func)
     data = sortedArray;
 }
 
-template<typename T>
+template <typename T>
 void Array<T>::Resize(int newSize)
 {
     if (numElements >= newSize)
@@ -116,7 +116,7 @@ void Array<T>::Resize(int newSize)
     data = newArray;
 }
 
-template<typename T>
+template <typename T>
 T* Array<T>::MergeSort(T* data, int length, ComparisonFunction func)
 {
     if (length <= 1)
@@ -150,7 +150,7 @@ T* Array<T>::MergeSort(T* data, int length, ComparisonFunction func)
     return merged;
 }
 
-template<typename T>
+template <typename T>
 T* Array<T>::Merge(T* left, int leftLen, T* right, int rightLen, ComparisonFunction func)
 {
     int li = 0, ri = 0, resi = 0;

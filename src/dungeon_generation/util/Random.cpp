@@ -24,9 +24,9 @@ float Random::GetRandomValue()
 
 unsigned int Random::GetRandomNumber()
 {
-    if (index >= n) 
+    if (index >= n)
     {
-        if (index > n) 
+        if (index > n)
         {
             // No seed set, seeding with lowest 32 bits of time(NULL)
             SetSeed((unsigned int)time(NULL));

@@ -7,7 +7,7 @@ struct Vec2i
 {
     Vec2i()
     {
-        x = 0; 
+        x = 0;
         y = 0;
     }
 
