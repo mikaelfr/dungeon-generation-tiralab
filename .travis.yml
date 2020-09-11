@@ -55,7 +55,7 @@ install:
       fi
 script:
     # Run static checks
-    - ./run-clang-format.py -r src/dungeon_generation
+    - python run-clang-format.py -r src/dungeon_generation
 
     ############################################################################
     # Build main and tests
