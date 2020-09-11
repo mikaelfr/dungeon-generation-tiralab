@@ -2,5 +2,6 @@ Language: Cpp
 BasedOnStyle: WebKit
 
 AllowShortBlocksOnASingleLine: true
+BreakBeforeBraces: Allman
 IndentCaseLabels: true
 SortIncludes: false
