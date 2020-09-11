@@ -30,6 +30,7 @@ jobs:
            - python-yaml
            - lcov
            - libopencv-dev
+           - clang-format
     
 before_install:
     # Combine global build options with OS/compiler-dependent options
@@ -53,15 +54,18 @@ install:
         export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       fi
 script:
+    # Run static checks
+    - ./run-clang-format.py -r src/dungeon_generation
+
     ############################################################################
     # Build main and tests
     ############################################################################
-     - mkdir -p build
-     - cd build
-     - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON .. 
-     - make
-     - make dungeon_generator_coverage
-     - ctest
+    - mkdir -p build
+    - cd build
+    - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON .. 
+    - make
+    - make dungeon_generator_coverage
+    - ctest
      
 after_success:
     - codecov -X gcov
