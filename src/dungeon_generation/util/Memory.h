@@ -5,7 +5,6 @@
 class Memory
 {
 public:
-
     static bool MemCpy(void* const destination, unsigned long const destinationSize, void const* const source, unsigned long const sourceSize)
     {
         // GCC doesn't have memcpy_s defined, doing some hacky code gymnastics to still be able to use _s version when building locally
@@ -18,7 +17,6 @@ public:
     }
 
 private:
-
     // No instances
     Memory() {}
     ~Memory() {}

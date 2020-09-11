@@ -20,5 +20,4 @@ private:
 
     void GenerateRooms();
     void SeparateRooms();
-
 };

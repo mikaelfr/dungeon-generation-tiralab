@@ -5,7 +5,6 @@
 unsigned int Random::index = n + 1;
 unsigned int Random::mt[n];
 
-
 void Random::SetSeed(unsigned int seed)
 {
     index = n;
@@ -20,7 +19,6 @@ float Random::GetRandomValue()
 {
     return (float)GetRandomNumber() / d;
 }
-
 
 unsigned int Random::GetRandomNumber()
 {
@@ -43,7 +41,6 @@ unsigned int Random::GetRandomNumber()
     index++;
     return y;
 }
-
 
 void Random::Twist()
 {

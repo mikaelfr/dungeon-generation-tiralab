@@ -43,7 +43,6 @@ private:
     T* Merge(T* left, int leftLen, T* right, int rightLen, ComparisonFunction func);
 };
 
-
 // Template function definitions
 
 template <typename T>
@@ -184,4 +183,3 @@ T* Array<T>::Merge(T* left, int leftLen, T* right, int rightLen, ComparisonFunct
 
     return result;
 }
-
