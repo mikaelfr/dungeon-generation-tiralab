@@ -4,5 +4,4 @@ BasedOnStyle: WebKit
 AllowShortBlocksOnASingleLine: true
 BreakBeforeBraces: Allman
 IndentCaseLabels: true
-SpaceInEmptyBlock: false
 SortIncludes: false
