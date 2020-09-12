@@ -7,6 +7,7 @@ void Renderer::Init()
 {
     pWindow = S2D_CreateWindow("Dungeon Generation", 640, 480, NULL, &Renderer::Render, S2D_STRETCH);
     bInitialized = true;
+    S2D_Show(pWindow);
 }
 
 void Renderer::Destroy()
@@ -14,6 +15,7 @@ void Renderer::Destroy()
     if (bInitialized)
     {
         S2D_FreeWindow(pWindow);
+        pWindow = NULL;
         bInitialized = false;
     }
 }

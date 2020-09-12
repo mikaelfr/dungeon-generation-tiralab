@@ -19,7 +19,7 @@ void Generator::Generate(int seed)
 
     Random::SetSeed(seed);
     GenerateRooms();
-    SeparateRooms();
+    //SeparateRooms();
 }
 
 void Generator::GenerateRooms()
