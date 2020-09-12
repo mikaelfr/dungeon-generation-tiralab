@@ -59,7 +59,7 @@ jobs:
       before_install:
        # Combine global build options with OS/compiler-dependent options
        - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-       - export CXX_FLAGS=${CXX_FLAGS}" "-Xlinker ${CXX_LINKER_FLAGS}" "${ENV_CXX_FLAGS}
+       - export CXX_FLAGS=${CXX_FLAGS}" -Xlinker "${CXX_LINKER_FLAGS}" "${ENV_CXX_FLAGS}
 
       install:
        - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-10" CC="clang-10"; fi
