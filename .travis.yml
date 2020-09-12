@@ -52,6 +52,7 @@ jobs:
            - python-yaml
            - lcov
            - libopencv-dev
+           -xvfb
     
       before_install:
        # Combine global build options with OS/compiler-dependent options
@@ -76,8 +77,15 @@ jobs:
           fi
        
        # Install simple2d
-       - brew tap simple2d/tap
-       - brew install simple2d
+       - git clone --recursive --depth 1 --branch v1.2.0 https://github.com/simple2d/simple2d.git
+       - cd simple2d
+       - make
+       - sudo make install
+       - cd ..
+       
+      before_script:
+       - export DISPLAY=:99.0
+       - sh -e /etc/init.d/xvfb start
        
       script:
        ############################################################################
