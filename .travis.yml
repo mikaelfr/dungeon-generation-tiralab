@@ -82,6 +82,7 @@ jobs:
        - git submodule update --remote
        - make
        - sudo make install
+       - cd ..
        
       script:
        ############################################################################
