@@ -2,17 +2,12 @@
 //
 
 #include "dungeon_generation.h"
-#include "dungeon_generation/util/Math.h"
-#include "dungeon_generation/util/Random.h"
+#include "dungeon_generation/Generator.h"
 
 int main()
 {
-    Random::SetSeed(0xBEEF);
-
-    for (int i = 0; i < 10; i++)
-    {
-        std::cout << Random::GetRandomValue() << std::endl;
-    }
+    Generator g;
+    g.Generate(0xBEEF);
 
     int a;
     std::cin >> a;

@@ -36,11 +36,18 @@ jobs:
       compiler: gcc
       addons:
        apt:
-         packages: &precise_latest_boost_packages
+         packages:
            - gcc-10
            - g++-10
            - clang-10
            - valgrind
+           
+           # Simple 2D reqs
+           - libsdl2-dev
+           - libsdl2-image-dev
+           - libsdl2-mixer-dev
+           - libsdl2-ttf-dev
+           
            # Misc
            - python-yaml
            - lcov
@@ -67,6 +74,14 @@ jobs:
             travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
             export PATH=${DEPS_DIR}/cmake/bin:${PATH}
           fi
+       
+       # Install simple2d
+       - git clone --recursive https://github.com/simple2d/simple2d/tree/v1.2.0
+       - git submodule init
+       - git submodule update --remote
+       - make
+       - make install
+       
       script:
        ############################################################################
        # Build main and tests
@@ -77,6 +92,10 @@ jobs:
        - make
        - make dungeon_generator_coverage
        - ctest
-             
+       
+       # Test for memory leaks
+       - make dungeon_generator
+       - valgrind --leak-check=yes dungeon_generator
+       
       after_success:
        - codecov -X gcov

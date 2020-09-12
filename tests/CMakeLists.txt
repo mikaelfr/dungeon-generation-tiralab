@@ -13,8 +13,8 @@ add_executable(${PROJECT_NAME}_test ${TEST_SOURCES})
 target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib)
 
 # Set properties for test target
-target_include_directories(${PROJECT_NAME}_test PUBLIC "../libs/doctest/")
-target_include_directories(${PROJECT_NAME}_test PUBLIC "../src/")
+target_include_directories(${PROJECT_NAME}_test PRIVATE ${PROJECT_SOURCE_DIR}/libs/doctest/)
+target_include_directories(${PROJECT_NAME}_test PRIVATE ${PROJECT_SOURCE_DIR}/src/)
 
 # Dynamically discover and add tests
 doctest_discover_tests(${PROJECT_NAME}_test)
