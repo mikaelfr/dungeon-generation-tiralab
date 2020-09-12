@@ -8,7 +8,6 @@ project("dungeon_generator")
 # Set CMake module path
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs/simple2d)
-list(APPEND CMAKE_PREFIX_PATH /usr/lib)
 
 # Enable testing
 include(CTest)
