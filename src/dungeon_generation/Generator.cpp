@@ -2,6 +2,7 @@
 #include "util/Random.h"
 #include "util/Math.h"
 #include "data/Tuple.h"
+#include "ui/Renderer.h"
 
 Generator::Generator()
     : rooms(numRoomCandidates)
@@ -14,9 +15,11 @@ Generator::~Generator()
 
 void Generator::Generate(int seed)
 {
+    Renderer::Init();
+
     Random::SetSeed(seed);
     GenerateRooms();
-    SeparateRooms();
+    //SeparateRooms();
 }
 
 void Generator::GenerateRooms()

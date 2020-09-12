@@ -2,19 +2,20 @@
 //
 
 #include "dungeon_generation.h"
-#include "dungeon_generation/util/Math.h"
-#include "dungeon_generation/util/Random.h"
+#include "dungeon_generation/Generator.h"
+#include "dungeon_generation/ui/Renderer.h"
 
-int main()
+int main(int argc, char** argv)
 {
-    Random::SetSeed(0xBEEF);
-
-    for (int i = 0; i < 10; i++)
+    if (argc > 1)
     {
-        std::cout << Random::GetRandomValue() << std::endl;
+        if (strcmp("--headless", argv[1]) == 0)
+        {
+            Renderer::SetHeadless(true);
+        }
     }
 
-    int a;
-    std::cin >> a;
+    Generator g;
+    g.Generate(0xBEEF);
     return 0;
 }
