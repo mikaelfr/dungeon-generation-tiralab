@@ -52,7 +52,7 @@ jobs:
            - python-yaml
            - lcov
            - libopencv-dev
-           -xvfb
+           - xvfb
     
       before_install:
        # Combine global build options with OS/compiler-dependent options
