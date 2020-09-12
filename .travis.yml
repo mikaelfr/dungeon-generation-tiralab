@@ -42,25 +42,23 @@ jobs:
            - clang-10
            - valgrind
            
-           # Simple 2D reqs
+           # Simple 2D deps
            - libsdl2-dev
            - libsdl2-image-dev
            - libsdl2-mixer-dev
            - libsdl2-ttf-dev
+           - libegl1-mesa-dev
+           - libgles2-mesa-dev
            
            # Misc
            - python-yaml
            - lcov
            - libopencv-dev
-           - mesa-utils
-           - libgl1-mesa-dev
-           - xvfb
            
       before_install:
        # Combine global build options with OS/compiler-dependent options
        - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
        - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
-       - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1400x900x24 -ac +extension GLX +render
 
       install:
        - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-10" CC="clang-10"; fi
@@ -78,14 +76,6 @@ jobs:
             travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
             export PATH=${DEPS_DIR}/cmake/bin:${PATH}
           fi
-       
-       - |
-        travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.8.tar.gz | tar xz
-        cd SDL2-2.0.8
-        /configure
-        make
-        sudo make install
-        cd ..
        
        # Install simple2d
        - git clone --recursive --depth 1 --branch v1.2.0 https://github.com/simple2d/simple2d.git
