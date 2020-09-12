@@ -11,14 +11,11 @@ int main(int argc, char** argv)
     {
         if (strcmp("--headless", argv[1]) == 0)
         {
-            Renderer::SetHeadless(false);
+            Renderer::SetHeadless(true);
         }
     }
 
     Generator g;
     g.Generate(0xBEEF);
-
-    int a;
-    std::cin >> a;
     return 0;
 }
