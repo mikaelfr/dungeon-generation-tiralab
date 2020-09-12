@@ -53,7 +53,6 @@ jobs:
            - lcov
            - libopencv-dev
            - mesa-utils
-           - libgl1-mesa
            - libgl1-mesa-dev
            - xvfb
            
