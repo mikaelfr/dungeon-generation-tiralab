@@ -9,7 +9,7 @@ env:
     - LINUX_DIST=focal
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     # Global build options and C++ flags
-    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow -std:c++17 --coverage"
+    - CXX_FLAGS="-Wall -pedantic -Werror -Wno-variadic-macros -Wno-long-long -Wno-shadow -std:c++17 --coverage -lSDL -lGLU -lGL"
     # Misc
     - RUN_TESTS=true
     - COVERAGE=false
