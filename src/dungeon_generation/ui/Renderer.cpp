@@ -1,10 +1,14 @@
 #include "Renderer.h"
 
 bool Renderer::bInitialized = false;
+bool Renderer::bHeadless = false;
 S2D_Window* Renderer::pWindow = NULL;
 
 void Renderer::Init()
 {
+    if (bHeadless)
+        return;
+
     pWindow = S2D_CreateWindow("Dungeon Generation", 640, 480, NULL, &Renderer::Render, S2D_STRETCH);
     bInitialized = true;
     S2D_Show(pWindow);
@@ -18,6 +22,11 @@ void Renderer::Destroy()
         pWindow = NULL;
         bInitialized = false;
     }
+}
+
+void Renderer::SetHeadless(bool headless)
+{
+    bHeadless = headless;
 }
 
 void Renderer::Render()

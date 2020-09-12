@@ -20,6 +20,7 @@ endif()
 
 # Add main executable target and link sources
 add_executable (${PROJECT_NAME} dungeon_generation.h dungeon_generation.cpp)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/libs/simple2d/)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}_lib)
 if(UNIX)
     target_link_libraries(${PROJECT_NAME} ${SIMPLE2D_LIB} SDL2::Main SDL2::Image SDL2::Mixer SDL2::TTF GLEW::GLEW OpenGL::GL)
