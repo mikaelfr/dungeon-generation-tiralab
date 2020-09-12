@@ -16,7 +16,7 @@ env:
 
 jobs:
   include:
-    - stage: checks
+    - stage: Checks
       name: "Static Checks"
       os: linux
       dist: focal
@@ -29,7 +29,7 @@ jobs:
         # Run static checks
         - python run-clang-format.py -r src/dungeon_generation
   
-    - stage: test
+    - stage: Tests
       name: "Tests and Coverage"
       os: linux
       dist: focal
@@ -96,9 +96,75 @@ jobs:
        - make dungeon_generator_coverage
        - ctest
        
-       # Test for memory leaks
-       - make dungeon_generator
-       - valgrind --leak-check=yes dungeon_generator
-       
       after_success:
        - codecov -X gcov
+       
+    - stage: Leaks
+      name: "Check for memory leaks"
+      os: linux
+      dist: focal
+      compiler: gcc
+      addons:
+       apt:
+         packages:
+           - gcc-10
+           - g++-10
+           - clang-10
+           - valgrind
+           
+           # Simple 2D deps
+           - libglew-dev
+           - libsdl2-dev
+           - libsdl2-image-dev
+           - libsdl2-mixer-dev
+           - libsdl2-ttf-dev
+           - libegl1-mesa-dev
+           - libgles2-mesa-dev
+           
+           # Misc
+           - python-yaml
+           - lcov
+           - libopencv-dev
+           
+      before_install:
+       # Combine global build options with OS/compiler-dependent options
+       - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
+       - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+
+      install:
+       - if [ "$CXX" = "clang++" ] && [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="clang++-10" CC="clang-10"; fi
+       - echo ${PATH}
+       - echo ${CXX}
+       - ${CXX} --version
+       - ${CXX} -v
+       - sudo pip install codecov
+            
+       # Download and install recent cmake
+       - |
+          if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
+            CMAKE_URL="http://www.cmake.org/files/v3.18/cmake-3.18.2-Linux-x86_64.tar.gz"
+            mkdir -p ${DEPS_DIR}/cmake
+            travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
+            export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+          fi
+       
+       # Install simple2d
+       - git clone --recursive --depth 1 --branch v1.2.0 https://github.com/simple2d/simple2d.git
+       - cd simple2d
+       - make
+       - sudo make install
+       - cd ..
+       
+      script:
+       ############################################################################
+       # Build main
+       ############################################################################
+       - mkdir -p build
+       - cd build
+       - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} .. 
+       - make
+       
+       # Test for memory leaks
+       - make dungeon_generator
+       - valgrind --leak-check=full --track-origins=yes ./src/dungeon_generator
+    
