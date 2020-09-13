@@ -15,11 +15,12 @@ Generator::~Generator()
 
 void Generator::Generate(int seed)
 {
-    Renderer::Init();
-
     Random::SetSeed(seed);
     GenerateRooms();
-    //SeparateRooms();
+    SeparateRooms();
+
+    Renderer::SetRoomArray(&rooms);
+    Renderer::Init();
 }
 
 void Generator::GenerateRooms()

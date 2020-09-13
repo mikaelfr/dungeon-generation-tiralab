@@ -1,8 +1,11 @@
 #include "Renderer.h"
 
+#include "../util/Random.h"
+
 bool Renderer::bInitialized = false;
 bool Renderer::bHeadless = false;
 S2D_Window* Renderer::pWindow = NULL;
+Array<Room>* Renderer::pRooms = NULL;
 
 void Renderer::Init()
 {
@@ -29,10 +32,24 @@ void Renderer::SetHeadless(bool headless)
     bHeadless = headless;
 }
 
+void Renderer::SetRoomArray(Array<Room>* rooms)
+{
+    pRooms = rooms;
+}
+
 void Renderer::Render()
 {
-    S2D_DrawTriangle(
-        320, 50, 1, 0, 0, 1,
-        540, 430, 0, 1, 0, 1,
-        100, 430, 0, 0, 1, 1);
+    if (pRooms)
+    {
+        for (const Room& room : *pRooms)
+        {
+            Array<Vec2i> vertices = room.GetVertices(20);
+            S2D_DrawQuad(
+                vertices[0].x, vertices[0].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f,
+                vertices[1].x, vertices[1].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f,
+                vertices[2].x, vertices[2].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f,
+                vertices[3].x, vertices[3].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f
+            );
+        }
+    }
 }
