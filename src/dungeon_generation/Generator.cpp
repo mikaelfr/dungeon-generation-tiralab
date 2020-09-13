@@ -11,7 +11,7 @@ Generator::Generator()
 
 Generator::~Generator()
 {
-    Renderer::SetGenerator(false);
+    Renderer::SetGenerator(NULL);
 }
 
 void Generator::Generate(int seed)
