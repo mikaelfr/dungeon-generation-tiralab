@@ -34,7 +34,7 @@ void Room::Move(const Vec2i& dir)
 
 Array<Vec2i> Room::GetVertices(int scale) const
 {
-    Array<Vec2i> arr;
+    Array<Vec2i> arr(4);
 
     arr.Add(Vec2i((x - width / 2) * scale, (y - height / 2) * scale));
     arr.Add(Vec2i((x - width / 2) * scale, (y + height / 2) * scale));
@@ -42,4 +42,9 @@ Array<Vec2i> Room::GetVertices(int scale) const
     arr.Add(Vec2i((x + width / 2) * scale, (y - height / 2) * scale));
 
     return arr;
+}
+
+bool Room::operator==(const Room& other) const
+{
+    return x == other.x && y == other.y && width == other.width && height == other.height;
 }

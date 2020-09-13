@@ -11,16 +11,31 @@ Generator::Generator()
 
 Generator::~Generator()
 {
+    Renderer::SetGenerator(false);
 }
 
 void Generator::Generate(int seed)
 {
     Random::SetSeed(seed);
+    currentStep = GENERATE;
     GenerateRooms();
-    SeparateRooms();
 
+    currentStep = SEPARATE;
     Renderer::SetRoomArray(&rooms);
-    Renderer::Init();
+    Renderer::Init(this);
+}
+
+void Generator::Update()
+{
+    numUpdates++;
+
+    // Assuming fps of 60, thus running update every 0.5s
+    if (currentStep == SEPARATE && numUpdates >= 30)
+    {
+        numUpdates = 0;
+        if (SeparateRooms())
+            currentStep = NEXT;
+    }
 }
 
 void Generator::GenerateRooms()
@@ -30,33 +45,30 @@ void Generator::GenerateRooms()
     {
         Vec2i pos = Math::GetRandomPointInCircle(circleRadius);
 
-        // Room width and height max 1/10th of circle radius
-        int roomWidth = (int)(Random::GetRandomValue() * (circleRadius / 10.0f));
-        int roomHeight = (int)(Random::GetRandomValue() * (circleRadius / 10.0f));
+        // Room width and height max half of circle radius and min 4 units
+        int roomWidth = (int)(Random::GetRandomValue() * (circleRadius / 2.0f) + 4);
+        int roomHeight = (int)(Random::GetRandomValue() * (circleRadius / 2.0f) + 4);
         rooms.Add(Room(roomWidth, roomHeight, pos.x, pos.y));
     }
 }
 
-void Generator::SeparateRooms()
+bool Generator::SeparateRooms()
 {
-    bool moving = true;
-
-    while (moving)
+    bool bDone = true;
+    // Sort by x axis and run step
+    rooms.Sort([](const Room& a, const Room& b) { return b.x - a.x; });
+    for (int i = 0; i < rooms.Size() - 1; i++)
     {
-        moving = false;
-        // Sort by x axis and run step
-        rooms.Sort([](const Room& a, const Room& b) { return b.x - a.x; });
-        for (int i = 0; i < rooms.Size() - 1; i++)
-        {
-            Room& r1 = rooms[i];
-            Room& r2 = rooms[i + 1];
+        Room& r1 = rooms[i];
+        Room& r2 = rooms[i + 1];
 
-            if (r1.IsColliding(r2))
-            {
-                Vec2i v = r1.GetVectorBetween(r2).Normalized();
-                r1.Move(v);
-                moving = true;
-            }
+        if (r1.IsColliding(r2))
+        {
+            Vec2i v = r1.GetVectorBetween(r2).Normalized();
+            r1.Move(v);
+            bDone = false;
         }
     }
+
+    return bDone;
 }

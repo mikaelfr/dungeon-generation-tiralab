@@ -13,6 +13,8 @@ struct Room
     void Move(const Vec2i& dir);
     Array<Vec2i> GetVertices(int scale = 1) const;
 
+    bool operator==(const Room& other) const;
+
     int width;
     int height;
     int x;

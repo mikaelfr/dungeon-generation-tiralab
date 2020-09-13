@@ -10,7 +10,12 @@ class Array
 public:
     Array();
     Array(int initialSize);
+    Array(const Array<T>& other);
+    Array(Array<T>&& other);
     ~Array();
+
+    Array<T>& operator=(const Array<T>& other);
+    Array<T>& operator=(Array<T>&& other);
 
     void Add(T value);
     int Size();
@@ -34,7 +39,7 @@ private:
     const int initialSize = 8;
     int numElements = 0;
     int dataLength = 0;
-    T* data = nullptr;
+    T* data = NULL;
 
     // Assumes that all of the elements in data will fit in the resized array
     void Resize(int newSize);
@@ -60,10 +65,58 @@ Array<T>::Array(int initialSize)
 }
 
 template <typename T>
+Array<T>::Array(const Array<T>& other)
+    : data(new T[other.dataLength])
+    , dataLength(other.dataLength)
+{
+    Memory::MemCpy(data, dataLength * sizeof(T), other.data, other.dataLength * sizeof(T));
+}
+
+template <typename T>
+Array<T>::Array(Array<T>&& other)
+    : data(NULL)
+    , dataLength(0)
+{
+    data = other.data;
+    dataLength = other.dataLength;
+    other.data = NULL;
+    other.dataLength = 0;
+}
+
+template <typename T>
 Array<T>::~Array()
 {
-    if (data)
+    delete[] data;
+}
+
+template <typename T>
+Array<T>& Array<T>::operator=(const Array<T>& other)
+{
+    if (this != &other)
+    {
         delete[] data;
+
+        data = new T[other.dataLength];
+        dataLength = other.dataLength;
+        Memory::MemCpy(data, dataLength * sizeof(T), other.data, other.dataLength * sizeof(T));
+    }
+
+    return *this;
+}
+
+template <typename T>
+inline Array<T>& Array<T>::operator=(Array<T>&& other)
+{
+    if (this != &other)
+    {
+        delete[] data;
+        data = other.data;
+        dataLength = other.dataLength;
+        other.data = NULL;
+        other.dataLength = 0;
+    }
+
+    return *this;
 }
 
 template <typename T>
@@ -88,6 +141,7 @@ void Array<T>::Sort(ComparisonFunction func)
 {
     T* sortedArray = MergeSort(data, numElements, func);
 
+    // If the length of the array is <= 1, the array is sorted by definition
     if (sortedArray != data)
         delete[] data;
 
@@ -128,13 +182,13 @@ T* Array<T>::MergeSort(T* data, int length, ComparisonFunction func)
     if (!Memory::MemCpy(left, halfPoint * sizeof(T), data, halfPoint * sizeof(T)))
     {
         std::cerr << "Couldn't copy left array" << std::endl;
-        return nullptr;
+        return NULL;
     }
 
     if (!Memory::MemCpy(right, (length - halfPoint) * sizeof(T), data + halfPoint, (length - halfPoint) * sizeof(T)))
     {
         std::cerr << "Couldn't copy right array" << std::endl;
-        return nullptr;
+        return NULL;
     }
 
     // Recursively sort both sides
@@ -145,6 +199,12 @@ T* Array<T>::MergeSort(T* data, int length, ComparisonFunction func)
     T* merged = Merge(mergedLeft, halfPoint, mergedRight, length - halfPoint, func);
     delete[] left;
     delete[] right;
+
+    if (halfPoint > 1)
+        delete[] mergedLeft;
+
+    if (length - halfPoint > 1)
+        delete[] mergedRight;
 
     return merged;
 }

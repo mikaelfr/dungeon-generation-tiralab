@@ -19,12 +19,20 @@ struct Vec2i
 
     Vec2i Normalized() const
     {
+        if (Length() == 0.0f)
+            return Vec2i(0, 0);
+
         return Vec2i((int)(x / Length()), (int)(y / Length()));
     }
 
     float Length() const
     {
         return sqrtf((float)(x * x + y * y));
+    }
+
+    inline bool operator==(const Vec2i& other) const
+    {
+        return x == other.x && y == other.y;
     }
 
     int x;

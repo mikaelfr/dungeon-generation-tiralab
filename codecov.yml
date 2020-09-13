@@ -4,4 +4,5 @@ ignore:
   - "libs/**/*"
   - "src/dungeon_generation.cpp"
   - "src/dungeon_generation.h"
+  - "src/dungeon_generation/ui/*"
   - "src/dungeon_generation/ui/**/*"
