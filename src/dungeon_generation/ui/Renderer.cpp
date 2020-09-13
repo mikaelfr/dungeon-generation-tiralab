@@ -20,7 +20,7 @@ void Renderer::Init(Generator* pGenerator)
 
     Renderer::pGenerator = pGenerator;
     pWindow = S2D_CreateWindow("Dungeon Generation", windowWidth, windowHeight, &Renderer::Update, &Renderer::Render, S2D_STRETCH);
-    pWindow->background = S2D_Color{ 0.925f, 0.957f, 0.957f, 1.0f };
+    pWindow->background = S2D_Color { 0.925f, 0.957f, 0.957f, 1.0f };
     bInitialized = true;
     S2D_Show(pWindow);
 }
@@ -72,7 +72,7 @@ void Renderer::Render()
                 (GLfloat)vertices[3].x + halfWidth, (GLfloat)vertices[3].y + halfHeight, 0.0f, 0.415f, 0.443f, 1.0f);
 
             S2D_DrawLine(
-                (GLfloat)vertices[0].x + halfWidth, (GLfloat)vertices[0].y + halfHeight, (GLfloat)vertices[1].x + halfWidth, (GLfloat)vertices[1].y + halfHeight, 1.0f, 
+                (GLfloat)vertices[0].x + halfWidth, (GLfloat)vertices[0].y + halfHeight, (GLfloat)vertices[1].x + halfWidth, (GLfloat)vertices[1].y + halfHeight, 1.0f,
                 0.0f, 0.0f, 0.0f, 1.0f,
                 0.0f, 0.0f, 0.0f, 1.0f,
                 0.0f, 0.0f, 0.0f, 1.0f,

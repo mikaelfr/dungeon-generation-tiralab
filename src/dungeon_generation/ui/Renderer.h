@@ -7,7 +7,7 @@
 // Currently the way Renderer and Generator are talking is mega dumb
 // since Renderer is static so it's easier to pass function pointers to c funtions.
 // Since this is really only used for debugging and generator will never need to talk
-// to this renderer after this course, I'm just taking the easy way out and assuming 
+// to this renderer after this course, I'm just taking the easy way out and assuming
 // that there will only ever be one Generator using the Renderer.
 class Renderer
 {
