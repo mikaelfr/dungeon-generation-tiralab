@@ -48,8 +48,7 @@ void Renderer::Render()
                 vertices[0].x, vertices[0].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f,
                 vertices[1].x, vertices[1].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f,
                 vertices[2].x, vertices[2].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f,
-                vertices[3].x, vertices[3].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f
-            );
+                vertices[3].x, vertices[3].y, Random::GetRandomValue(), Random::GetRandomValue(), Random::GetRandomValue(), 1.0f);
         }
     }
 }
