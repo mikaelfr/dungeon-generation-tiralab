@@ -1,4 +1,15 @@
 # Ignore specific files
+
+coverage:
+  status:
+    project:
+      default: on
+    patch:
+      default: off
+    changes:
+      default: off
+
+
 ignore:
   - "tests/**/*"
   - "libs/**/*"

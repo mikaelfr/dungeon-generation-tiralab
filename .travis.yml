@@ -99,8 +99,8 @@ jobs:
       after_success:
        - codecov -X gcov
        
-    - stage: Leaks
-      name: "Check for memory leaks"
+    - stage: Runtime
+      name: "Check for runtime errors and memory leaks"
       os: linux
       dist: focal
       compiler: gcc
