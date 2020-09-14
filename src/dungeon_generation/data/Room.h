@@ -12,6 +12,7 @@ struct Room
     Vec2 GetVectorBetween(const Room& other) const;
     Vec2 Move(const Vec2& dir);
     Array<Vec2> GetVertices(float scale = 1.0f) const;
+    float DistanceToOrigin() const;
 
     bool operator==(const Room& other) const;
 

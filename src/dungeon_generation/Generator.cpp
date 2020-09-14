@@ -29,8 +29,8 @@ void Generator::Update()
 {
     numUpdates++;
 
-    // Assuming fps of 60, thus running update every 0.5s
-    if (currentStep == SEPARATE && numUpdates >= 30)
+    // Assuming fps of 60, thus running update every 0.1s
+    if (currentStep == SEPARATE && numUpdates >= 6)
     {
         numUpdates = 0;
         if (SeparateRooms())
@@ -55,18 +55,34 @@ void Generator::GenerateRooms()
 bool Generator::SeparateRooms()
 {
     bool bDone = true;
-    // Sort by x axis and run step
-    rooms.Sort([](const Room& a, const Room& b) { return (int)(b.x - a.x); });
-    for (int i = 0; i < rooms.Size() - 1; i++)
-    {
-        Room& r1 = rooms[i];
-        Room& r2 = rooms[i + 1];
 
-        if (r1.IsColliding(r2))
+    // Fuck it we goin O(n^2) for now 
+    for (int i = 0; i < rooms.Size(); i++)
+    {
+        for (int j = 0; j < rooms.Size(); j++)
         {
-            Vec2 v = r1.GetVectorBetween(r2).Normalized();
-            r1.Move(v);
-            bDone = false;
+            // Can't collide with self
+            if (i == j)
+                continue;
+
+            Room& r1 = rooms[i];
+            Room& r2 = rooms[j];
+
+            if (r1.IsColliding(r2))
+            {
+                if (r1.DistanceToOrigin() > r2.DistanceToOrigin())
+                {
+                    Vec2 v = r2.GetVectorBetween(r1).Normalized();
+                    r1.Move(v);
+                }
+                else
+                {
+                    Vec2 v = r1.GetVectorBetween(r2).Normalized();
+                    r2.Move(v);
+                }
+                
+                bDone = false;
+            }
         }
     }
 

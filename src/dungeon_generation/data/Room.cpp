@@ -46,6 +46,12 @@ Array<Vec2> Room::GetVertices(float scale) const
     return arr;
 }
 
+// Distance to origin aka position length
+float Room::DistanceToOrigin() const
+{
+    return Vec2(x, y).Length();
+}
+
 bool Room::operator==(const Room& other) const
 {
     return x == other.x && y == other.y && width == other.width && height == other.height;
