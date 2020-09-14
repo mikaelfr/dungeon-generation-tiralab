@@ -56,7 +56,7 @@ bool Generator::SeparateRooms()
 {
     bool bDone = true;
 
-    // Fuck it we goin O(n^2) for now 
+    // Fuck it we goin O(n^2) for now
     for (int i = 0; i < rooms.Size(); i++)
     {
         for (int j = 0; j < rooms.Size(); j++)
@@ -80,7 +80,7 @@ bool Generator::SeparateRooms()
                     Vec2 v = r1.GetVectorBetween(r2).Normalized();
                     r2.Move(v);
                 }
-                
+
                 bDone = false;
             }
         }
