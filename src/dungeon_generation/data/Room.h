@@ -20,4 +20,5 @@ struct Room
     float height;
     float x;
     float y;
+    bool bMainRoom;
 };

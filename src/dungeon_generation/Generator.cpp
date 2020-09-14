@@ -29,12 +29,20 @@ void Generator::Update()
 {
     numUpdates++;
 
+    // Intentionally placing this above SEPARATE step
+    // so this step is run on the next update
+    if (currentStep == PICKING)
+    {
+        PickRooms();
+        currentStep = GRAPHING;
+    }
+
     // Assuming fps of 60, thus running update every 0.1s
     if (currentStep == SEPARATE && numUpdates >= 6)
     {
         numUpdates = 0;
         if (SeparateRooms())
-            currentStep = NEXT;
+            currentStep = PICKING;
     }
 }
 
@@ -87,4 +95,26 @@ bool Generator::SeparateRooms()
     }
 
     return bDone;
+}
+
+void Generator::PickRooms()
+{
+    rooms.Sort([](const Room& a, const Room& b) { return (int)(b.width - a.width); });
+    float widthMean = rooms[(int)(rooms.Size() / 2)].width;
+
+    rooms.Sort([](const Room& a, const Room& b) { return (int)(b.height - a.height); });
+    float heightMean = rooms[(int)(rooms.Size() / 2)].height;
+
+    // Locking array so memory won't be affected
+    rooms.Lock();
+
+    // Pick rooms larger than 1.25 times the mean in width and height
+    for (Room& r : rooms)
+    {
+        if (r.width > 1.25f * widthMean && r.height > 1.25f * heightMean)
+        {
+            r.bMainRoom = true;
+            mainRooms.Add(&r);
+        }
+    }
 }

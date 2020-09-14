@@ -6,6 +6,7 @@ Room::Room()
     height = 0;
     x = 0;
     y = 0;
+    bMainRoom = false;
 }
 
 Room::Room(float width, float height, float x, float y)
@@ -14,6 +15,7 @@ Room::Room(float width, float height, float x, float y)
     this->height = height;
     this->x = x;
     this->y = y;
+    this->bMainRoom = false;
 }
 
 bool Room::IsColliding(const Room& other) const

@@ -38,4 +38,26 @@ TEST_SUITE("Test Array")
             CHECK(arr[i] == sorted[i]);
         }
     }
+
+    TEST_CASE("Test locking")
+    {
+        Array<int> arr;
+        arr.Add(5);
+        arr.Add(3);
+        arr.Add(1);
+
+        arr.Lock();
+
+        Array<int> arr2;
+        CHECK_THROWS(arr = arr2);
+        CHECK_THROWS(arr = Array<int>());
+        CHECK_THROWS(arr.Add(2));
+        CHECK_THROWS(arr.Sort([](const int& a, const int& b) { return b - a; }));
+
+        arr.Unlock();
+        CHECK_NOTHROW(arr.Add(2));
+        CHECK_NOTHROW(arr.Sort([](const int& a, const int& b) { return b - a; }));
+        CHECK_NOTHROW(arr = arr2);
+        CHECK_NOTHROW(arr = Array<int>());
+    }
 }

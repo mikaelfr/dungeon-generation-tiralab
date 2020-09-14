@@ -35,11 +35,16 @@ public:
     T operator[](int i) const { return data[i]; }
     T& operator[](int i) { return data[i]; }
 
+    // Locks the array, permitting no operations that could modify memory
+    void Lock();
+    void Unlock();
+
 private:
     const int initialSize = 8;
     int numElements = 0;
     int dataLength = 0;
     T* data = NULL;
+    bool bLocked = false;
 
     // Assumes that all of the elements in data will fit in the resized array
     void Resize(int newSize);
@@ -94,6 +99,9 @@ Array<T>& Array<T>::operator=(const Array<T>& other)
 {
     if (this != &other)
     {
+        if (bLocked)
+            throw "This array is currently locked. Copy assignment operator not in use.";
+
         delete[] data;
 
         data = new T[other.dataLength];
@@ -109,6 +117,9 @@ inline Array<T>& Array<T>::operator=(Array<T>&& other)
 {
     if (this != &other)
     {
+        if (bLocked)
+            throw "This array is currently locked. Move assignment operator not in use.";
+
         delete[] data;
         data = other.data;
         dataLength = other.dataLength;
@@ -122,6 +133,9 @@ inline Array<T>& Array<T>::operator=(Array<T>&& other)
 template <typename T>
 void Array<T>::Add(T value)
 {
+    if (bLocked)
+        throw "This array is currently locked. Add not in use.";
+
     if (dataLength <= numElements)
     {
         Resize(dataLength * 2);
@@ -139,6 +153,9 @@ int Array<T>::Size()
 template <typename T>
 void Array<T>::Sort(ComparisonFunction func)
 {
+    if (bLocked)
+        throw "This array is currently locked. Sort not in use.";
+
     T* sortedArray = MergeSort(data, numElements, func);
 
     // If the length of the array is <= 1, the array is sorted by definition
@@ -146,6 +163,18 @@ void Array<T>::Sort(ComparisonFunction func)
         delete[] data;
 
     data = sortedArray;
+}
+
+template <typename T>
+inline void Array<T>::Lock()
+{
+    bLocked = true;
+}
+
+template <typename T>
+inline void Array<T>::Unlock()
+{
+    bLocked = false;
 }
 
 template <typename T>
@@ -166,6 +195,7 @@ void Array<T>::Resize(int newSize)
     }
 
     delete[] data;
+    dataLength = newSize;
     data = newArray;
 }
 

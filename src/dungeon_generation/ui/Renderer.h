@@ -29,6 +29,10 @@ private:
     static Array<Room>* pRooms;
     static class Generator* pGenerator;
 
+    static S2D_Color bgColor;
+    static S2D_Color fgColor;
+    static S2D_Color hgColor;
+
     static void Render();
 
     // We out here going all static class and shit

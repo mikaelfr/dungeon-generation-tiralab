@@ -11,7 +11,9 @@ public:
         NOT_STARTED = 0,
         GENERATE,
         SEPARATE,
-        NEXT
+        PICKING,
+        GRAPHING,
+        HALLWAYS
     };
 
     Generator();
@@ -29,9 +31,15 @@ private:
 
     // Hold array here so it need not be passed around constantly
     Array<Room> rooms;
+    // Points to rooms in above array
+    // Rooms array CANNOT be modified after main rooms have been picked
+    // or I'll have to come up with something else
+    Array<Room*> mainRooms;
 
     void GenerateRooms();
 
     // Returns true if done with separating
     bool SeparateRooms();
+
+    void PickRooms();
 };
