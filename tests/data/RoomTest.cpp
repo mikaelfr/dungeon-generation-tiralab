@@ -29,4 +29,23 @@ TEST_SUITE("Test Room")
         CHECK(r1Verts[2] == Vec2i(20, 25));
         CHECK(r1Verts[3] == Vec2i(20, -5));
     }
+
+    TEST_CASE("Test vector between")
+    {
+        Room r1(20, 30, 10, 10);
+        Room r2(10, 10, 5, -5);
+
+        CHECK(r1.GetVectorBetween(r2) == Vec2i(-5, -15));
+        CHECK(r2.GetVectorBetween(r1) == -r1.GetVectorBetween(r2));
+    }
+
+    TEST_CASE("Test move")
+    {
+        Room r1(20, 30, 10, 10);
+        Room r2(10, 10, 5, -5);
+
+        CHECK(r1.Move(Vec2i(5, -5)) == Vec2i(15, 5));
+        CHECK(r2.Move(Vec2i(0, 10)) == Vec2i(5, 5));
+        CHECK(r2.Move(Vec2i(0, 0)) == Vec2i(5, 5));
+    }
 }

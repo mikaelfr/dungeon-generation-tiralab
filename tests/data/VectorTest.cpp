@@ -38,4 +38,24 @@ TEST_SUITE("Test Vector")
         CHECK(Vec2i(0, -1).Normalized() == Vec2i(0, -1));
         CHECK(Vec2i(0, -2).Normalized() == Vec2i(0, -1));
     }
+
+    TEST_CASE("Test vector addition")
+    {
+        CHECK(Vec2i(0, 0) + Vec2i(0, 0) == Vec2i(0, 0));
+        CHECK(Vec2i(6, 4) + Vec2i(3, 7) == Vec2i(9, 11));
+        CHECK(Vec2i(-5, 90) + Vec2i(7, -100) == Vec2i(2, -10));
+        CHECK(Vec2i(10, 0) + Vec2i(0, 3) == Vec2i(10, 3));
+        CHECK(Vec2i(-8, -5) + Vec2i(-4, -7) == Vec2i(-12, -12));
+        CHECK(Vec2i(9, 5) + Vec2i(-5, -9) == Vec2i(4, -4));
+    }
+
+    TEST_CASE("Test vector subtraction")
+    {
+        CHECK(Vec2i(0, 0) - Vec2i(0, 0) == Vec2i(0, 0));
+        CHECK(Vec2i(6, 4) - Vec2i(3, 7) == Vec2i(3, -3));
+        CHECK(Vec2i(-5, 90) - Vec2i(7, -100) == Vec2i(-12, 190));
+        CHECK(Vec2i(10, 0) - Vec2i(0, 3) == Vec2i(10, -3));
+        CHECK(Vec2i(-8, -5) - Vec2i(-4, -7) == Vec2i(-4, 2));
+        CHECK(Vec2i(9, 5) - Vec2i(-5, -9) == Vec2i(14, 14));
+    }
 }

@@ -10,7 +10,7 @@ struct Room
 
     bool IsColliding(const Room& other) const;
     Vec2i GetVectorBetween(const Room& other) const;
-    void Move(const Vec2i& dir);
+    Vec2i Move(const Vec2i& dir);
     Array<Vec2i> GetVertices(int scale = 1) const;
 
     bool operator==(const Room& other) const;

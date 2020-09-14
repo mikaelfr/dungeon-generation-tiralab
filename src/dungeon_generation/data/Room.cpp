@@ -26,10 +26,12 @@ Vec2i Room::GetVectorBetween(const Room& other) const
     return Vec2i(other.x - x, other.y - y);
 }
 
-void Room::Move(const Vec2i& dir)
+Vec2i Room::Move(const Vec2i& dir)
 {
     x += dir.x;
     y += dir.y;
+
+    return Vec2i(x, y);
 }
 
 Array<Vec2i> Room::GetVertices(int scale) const
