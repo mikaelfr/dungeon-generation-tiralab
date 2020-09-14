@@ -64,7 +64,7 @@ void Renderer::Render()
     {
         for (const Room& room : *pRooms)
         {
-            Array<Vec2i> vertices = room.GetVertices();
+            Array<Vec2> vertices = room.GetVertices();
             S2D_DrawQuad(
                 (GLfloat)vertices[0].x + halfWidth, (GLfloat)vertices[0].y + halfHeight, 0.0f, 0.415f, 0.443f, 1.0f,
                 (GLfloat)vertices[1].x + halfWidth, (GLfloat)vertices[1].y + halfHeight, 0.0f, 0.415f, 0.443f, 1.0f,

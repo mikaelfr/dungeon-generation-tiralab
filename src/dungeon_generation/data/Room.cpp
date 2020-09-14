@@ -8,7 +8,7 @@ Room::Room()
     y = 0;
 }
 
-Room::Room(int width, int height, int x, int y)
+Room::Room(float width, float height, float x, float y)
 {
     this->width = width;
     this->height = height;
@@ -21,27 +21,27 @@ bool Room::IsColliding(const Room& other) const
     return Math::Abs(x - other.x) <= (width + other.width) * 0.5f && Math::Abs(y - other.y) <= (height + other.height) * 0.5f;
 }
 
-Vec2i Room::GetVectorBetween(const Room& other) const
+Vec2 Room::GetVectorBetween(const Room& other) const
 {
-    return Vec2i(other.x - x, other.y - y);
+    return Vec2(other.x - x, other.y - y);
 }
 
-Vec2i Room::Move(const Vec2i& dir)
+Vec2 Room::Move(const Vec2& dir)
 {
     x += dir.x;
     y += dir.y;
 
-    return Vec2i(x, y);
+    return Vec2(x, y);
 }
 
-Array<Vec2i> Room::GetVertices(int scale) const
+Array<Vec2> Room::GetVertices(float scale) const
 {
-    Array<Vec2i> arr(4);
+    Array<Vec2> arr(4);
 
-    arr.Add(Vec2i((x - width / 2) * scale, (y - height / 2) * scale));
-    arr.Add(Vec2i((x - width / 2) * scale, (y + height / 2) * scale));
-    arr.Add(Vec2i((x + width / 2) * scale, (y + height / 2) * scale));
-    arr.Add(Vec2i((x + width / 2) * scale, (y - height / 2) * scale));
+    arr.Add(Vec2((x - width / 2) * scale, (y - height / 2) * scale));
+    arr.Add(Vec2((x - width / 2) * scale, (y + height / 2) * scale));
+    arr.Add(Vec2((x + width / 2) * scale, (y + height / 2) * scale));
+    arr.Add(Vec2((x + width / 2) * scale, (y - height / 2) * scale));
 
     return arr;
 }

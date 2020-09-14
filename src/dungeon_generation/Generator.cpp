@@ -43,11 +43,11 @@ void Generator::GenerateRooms()
     // Generate <numRoomCandidates> candidates for rooms
     for (int i = 0; i < numRoomCandidates; i++)
     {
-        Vec2i pos = Math::GetRandomPointInCircle(circleRadius);
+        Vec2 pos = Math::GetRandomPointInCircle(circleRadius);
 
         // Room width and height max half of circle radius and min 4 units
-        int roomWidth = (int)(Random::GetRandomValue() * (circleRadius / 2.0f) + 4);
-        int roomHeight = (int)(Random::GetRandomValue() * (circleRadius / 2.0f) + 4);
+        float roomWidth = Random::GetRandomValue() * (circleRadius / 2.0f) + 4;
+        float roomHeight = Random::GetRandomValue() * (circleRadius / 2.0f) + 4;
         rooms.Add(Room(roomWidth, roomHeight, pos.x, pos.y));
     }
 }
@@ -56,7 +56,7 @@ bool Generator::SeparateRooms()
 {
     bool bDone = true;
     // Sort by x axis and run step
-    rooms.Sort([](const Room& a, const Room& b) { return b.x - a.x; });
+    rooms.Sort([](const Room& a, const Room& b) { return (int)(b.x - a.x); });
     for (int i = 0; i < rooms.Size() - 1; i++)
     {
         Room& r1 = rooms[i];
@@ -64,7 +64,7 @@ bool Generator::SeparateRooms()
 
         if (r1.IsColliding(r2))
         {
-            Vec2i v = r1.GetVectorBetween(r2).Normalized();
+            Vec2 v = r1.GetVectorBetween(r2).Normalized();
             r1.Move(v);
             bDone = false;
         }

@@ -6,17 +6,17 @@
 struct Room
 {
     Room();
-    Room(int width, int height, int x, int y);
+    Room(float width, float height, float x, float y);
 
     bool IsColliding(const Room& other) const;
-    Vec2i GetVectorBetween(const Room& other) const;
-    Vec2i Move(const Vec2i& dir);
-    Array<Vec2i> GetVertices(int scale = 1) const;
+    Vec2 GetVectorBetween(const Room& other) const;
+    Vec2 Move(const Vec2& dir);
+    Array<Vec2> GetVertices(float scale = 1.0f) const;
 
     bool operator==(const Room& other) const;
 
-    int width;
-    int height;
-    int x;
-    int y;
+    float width;
+    float height;
+    float x;
+    float y;
 };

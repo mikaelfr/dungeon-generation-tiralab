@@ -23,11 +23,11 @@ TEST_SUITE("Test Room")
     TEST_CASE("Test vertices")
     {
         Room r1(20, 30, 10, 10);
-        Array<Vec2i> r1Verts = r1.GetVertices();
-        CHECK(r1Verts[0] == Vec2i(0, -5));
-        CHECK(r1Verts[1] == Vec2i(0, 25));
-        CHECK(r1Verts[2] == Vec2i(20, 25));
-        CHECK(r1Verts[3] == Vec2i(20, -5));
+        Array<Vec2> r1Verts = r1.GetVertices();
+        CHECK(r1Verts[0] == Vec2(0, -5));
+        CHECK(r1Verts[1] == Vec2(0, 25));
+        CHECK(r1Verts[2] == Vec2(20, 25));
+        CHECK(r1Verts[3] == Vec2(20, -5));
     }
 
     TEST_CASE("Test vector between")
@@ -35,7 +35,7 @@ TEST_SUITE("Test Room")
         Room r1(20, 30, 10, 10);
         Room r2(10, 10, 5, -5);
 
-        CHECK(r1.GetVectorBetween(r2) == Vec2i(-5, -15));
+        CHECK(r1.GetVectorBetween(r2) == Vec2(-5, -15));
         CHECK(r2.GetVectorBetween(r1) == -r1.GetVectorBetween(r2));
     }
 
@@ -44,8 +44,8 @@ TEST_SUITE("Test Room")
         Room r1(20, 30, 10, 10);
         Room r2(10, 10, 5, -5);
 
-        CHECK(r1.Move(Vec2i(5, -5)) == Vec2i(15, 5));
-        CHECK(r2.Move(Vec2i(0, 10)) == Vec2i(5, 5));
-        CHECK(r2.Move(Vec2i(0, 0)) == Vec2i(5, 5));
+        CHECK(r1.Move(Vec2(5, -5)) == Vec2(15, 5));
+        CHECK(r2.Move(Vec2(0, 10)) == Vec2(5, 5));
+        CHECK(r2.Move(Vec2(0, 0)) == Vec2(5, 5));
     }
 }

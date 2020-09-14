@@ -5,7 +5,7 @@
 class Math
 {
 public:
-    static Vec2i GetRandomPointInCircle(int radius);
+    static Vec2 GetRandomPointInCircle(int radius);
 
     static inline int Abs(int a) { return (a < 0) ? -a : a; }
     static inline float Abs(float a) { return (a < 0) ? -a : a; }

@@ -3,69 +3,95 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-struct Vec2i
+struct Vec2
 {
-    Vec2i()
+    Vec2()
     {
-        x = 0;
-        y = 0;
+        x = 0.0f;
+        y = 0.0f;
     }
 
-    Vec2i(int x, int y)
+    Vec2(float x, float y)
     {
         this->x = x;
         this->y = y;
     }
 
-    Vec2i Normalized() const
+    Vec2 Normalized() const
     {
         if (Length() == 0.0f)
-            return Vec2i(0, 0);
+            return Vec2(0.0f, 0.0f);
 
-        return Vec2i((int)(x / Length()), (int)(y / Length()));
+        return Vec2(x / Length(), y / Length());
     }
 
     float Length() const
     {
-        return sqrtf((float)(x * x + y * y));
+        return sqrtf(x * x + y * y);
     }
 
-    inline bool operator==(const Vec2i& other) const
+    inline bool operator==(const Vec2& other) const
     {
         return x == other.x && y == other.y;
     }
 
-    inline Vec2i operator-() const 
+    inline Vec2 operator-() const
     {
-        return Vec2i(-x, -y);
+        return Vec2(-x, -y);
     }
 
-    inline Vec2i& operator+=(const Vec2i& other)
+    inline Vec2& operator+=(const Vec2& other)
     {
         x += other.x;
         y += other.y;
         return *this;
     }
 
-    inline Vec2i& operator-=(const Vec2i& other)
+    inline Vec2& operator-=(const Vec2& other)
     {
         x -= other.x;
         y -= other.y;
         return *this;
     }
 
-    inline friend Vec2i operator+(Vec2i lhs, const Vec2i& rhs)
+    inline Vec2& operator*=(float value)
+    {
+        x *= value;
+        y *= value;
+        return *this;
+    }
+
+    inline Vec2& operator*=(int value)
+    {
+        x *= value;
+        y *= value;
+        return *this;
+    }
+
+    inline friend Vec2 operator+(Vec2 lhs, const Vec2& rhs)
     {
         lhs += rhs;
         return lhs;
     }
 
-    inline friend Vec2i operator-(Vec2i lhs, const Vec2i& rhs)
+    inline friend Vec2 operator-(Vec2 lhs, const Vec2& rhs)
     {
         lhs -= rhs;
         return lhs;
     }
 
-    int x;
-    int y;
+    inline friend Vec2 operator*(Vec2 lhs, float value)
+    {
+        lhs *= value;
+        return lhs;
+    }
+
+    inline friend Vec2 operator*(Vec2 lhs, int value)
+    {
+        lhs *= value;
+        return lhs;
+    }
+
+    float x;
+    float y;
 };
