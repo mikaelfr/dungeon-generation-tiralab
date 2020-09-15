@@ -14,6 +14,10 @@ public:
     static float Min(float a, float b);
     static float Max(float a, float b);
 
+    // Determinant for Delaunauy triangulation
+    // MILITARY USE ONLY, NOT FOR THE GENERAL PUBLIC
+    static float Determinant(Vec2 a, Vec2 b, Vec2 c, Vec2 d);
+
 private:
     // Prevent creation of instances
     Math() {}

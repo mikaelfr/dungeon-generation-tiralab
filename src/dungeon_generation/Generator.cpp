@@ -29,8 +29,8 @@ void Generator::Update()
 {
     numUpdates++;
 
-    // Intentionally placing this above SEPARATE step
-    // so this step is run on the next update
+    // Intentionally placing these in reverse order
+    // so steps is run on the next update
     if (currentStep == PICKING)
     {
         PickRooms();

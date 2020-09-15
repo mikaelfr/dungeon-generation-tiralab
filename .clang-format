@@ -1,7 +1,9 @@
 Language: Cpp
 BasedOnStyle: WebKit
 
+AlignOperands: true
 AllowShortBlocksOnASingleLine: true
+BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Allman
 IndentCaseLabels: true
 SortIncludes: false
