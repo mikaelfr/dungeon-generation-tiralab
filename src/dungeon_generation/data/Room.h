@@ -22,5 +22,5 @@ struct Room
     float y;
     bool bMainRoom;
 
-    Array<Room*> connections;
+    Array<std::shared_ptr<Room>> connections;
 };

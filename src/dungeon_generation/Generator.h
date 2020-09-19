@@ -37,6 +37,6 @@ private:
 
     // Returns true if done with separating
     bool SeparateRooms();
-
     void PickRooms();
+    void GraphRooms();
 };

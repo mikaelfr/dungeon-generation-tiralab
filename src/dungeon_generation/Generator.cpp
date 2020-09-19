@@ -115,3 +115,5 @@ void Generator::PickRooms()
         }
     }
 }
+
+void Generator::GraphRooms() {}

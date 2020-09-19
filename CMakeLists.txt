@@ -5,6 +5,9 @@ cmake_minimum_required (VERSION 3.8)
 
 project("dungeon_generator")
 
+# Set C++17
+set(CMAKE_CXX_STANDARD 17)
+
 # Set CMake module path
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs/simple2d)
