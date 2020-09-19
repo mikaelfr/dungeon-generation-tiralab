@@ -18,6 +18,8 @@ public:
     // MILITARY USE ONLY, NOT FOR THE GENERAL PUBLIC
     static float Determinant(Vec2 a, Vec2 b, Vec2 c, Vec2 d);
 
+    static bool IsClockwise(Vec2 a, Vec2 b, Vec2 c);
+
 private:
     // Prevent creation of instances
     Math() {}

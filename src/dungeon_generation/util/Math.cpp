@@ -46,3 +46,8 @@ float Math::Determinant(Vec2 a, Vec2 b, Vec2 c, Vec2 d)
            c.x * a.y * (b.x * b.x + b.y * b.y) - a.x * c.y * (b.x * b.x + b.y * b.y) -
            b.x * a.y * (c.x * c.x + c.y * c.y) + a.x * b.y * (c.x * c.x + c.y * c.y);
 }
+
+bool Math::IsClockwise(Vec2 a, Vec2 b, Vec2 c)
+{
+    return (b.x - a.x) * (b.y + a.y) + (c.x - b.x) * (c.y + b.y) + (a.x - c.x) * (a.y + c.y) < 0;
+}

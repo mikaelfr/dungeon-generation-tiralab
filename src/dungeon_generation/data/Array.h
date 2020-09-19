@@ -74,7 +74,7 @@ Array<T>::Array(const Array<T>& other)
     : data(new T[other.dataLength])
     , dataLength(other.dataLength)
 {
-    Memory::MemCpy(data, dataLength * sizeof(T), other.data, other.dataLength * sizeof(T));
+    std::copy(other.begin(), other.end(), data);
 }
 
 template <typename T>
@@ -106,7 +106,7 @@ Array<T>& Array<T>::operator=(const Array<T>& other)
 
         data = new T[other.dataLength];
         dataLength = other.dataLength;
-        Memory::MemCpy(data, dataLength * sizeof(T), other.data, other.dataLength * sizeof(T));
+        std::copy(other.begin(), other.end(), data);
     }
 
     return *this;
@@ -188,11 +188,7 @@ void Array<T>::Resize(int newSize)
 
     T* newArray = new T[newSize];
 
-    if (!Memory::MemCpy(newArray, newSize * sizeof(T), data, numElements * sizeof(T)))
-    {
-        std::cerr << "Couldn't copy to new array when resizing." << std::endl;
-        return;
-    }
+    std::copy(begin(), end(), newArray);
 
     delete[] data;
     dataLength = newSize;
@@ -209,17 +205,8 @@ T* Array<T>::MergeSort(T* data, int length, ComparisonFunction func)
     T* left = new T[halfPoint];
     T* right = new T[length - halfPoint];
 
-    if (!Memory::MemCpy(left, halfPoint * sizeof(T), data, halfPoint * sizeof(T)))
-    {
-        std::cerr << "Couldn't copy left array" << std::endl;
-        return NULL;
-    }
-
-    if (!Memory::MemCpy(right, (length - halfPoint) * sizeof(T), data + halfPoint, (length - halfPoint) * sizeof(T)))
-    {
-        std::cerr << "Couldn't copy right array" << std::endl;
-        return NULL;
-    }
+    std::copy(data, data + halfPoint, left);
+    std::copy(data + halfPoint, data + length, right);
 
     // Recursively sort both sides
     T* mergedLeft = MergeSort(left, halfPoint, func);
@@ -259,17 +246,8 @@ T* Array<T>::Merge(T* left, int leftLen, T* right, int rightLen, ComparisonFunct
     }
 
     // Insert the rest into result array
-    if (!Memory::MemCpy(result + resi, (leftLen + rightLen - resi) * sizeof(T), left + li, (leftLen - li) * sizeof(T)))
-    {
-        std::cerr << "Couldn't copy left array" << std::endl;
-        return nullptr;
-    }
-
-    if (!Memory::MemCpy(result + resi, (leftLen + rightLen - resi) * sizeof(T), right + ri, (rightLen - ri) * sizeof(T)))
-    {
-        std::cerr << "Couldn't copy right array" << std::endl;
-        return nullptr;
-    }
+    std::copy(left + li, left + leftLen, result + resi);
+    std::copy(right + ri, right + rightLen, result + resi);
 
     return result;
 }

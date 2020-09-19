@@ -21,4 +21,6 @@ struct Room
     float x;
     float y;
     bool bMainRoom;
+
+    Array<Room*> connections;
 };
