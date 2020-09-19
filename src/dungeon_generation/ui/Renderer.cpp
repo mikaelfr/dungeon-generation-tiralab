@@ -10,7 +10,7 @@ int Renderer::windowHeight = 480;
 bool Renderer::bInitialized = false;
 bool Renderer::bHeadless = false;
 S2D_Window* Renderer::pWindow = NULL;
-Array<Room>* Renderer::pRooms = NULL;
+Array<std::shared_ptr<Room>>* Renderer::pRooms = NULL;
 Generator* Renderer::pGenerator = NULL;
 
 S2D_Color Renderer::bgColor = { 0.925f, 0.957f, 0.957f, 1.0f };
@@ -50,7 +50,7 @@ void Renderer::SetHeadless(bool headless)
     bHeadless = headless;
 }
 
-void Renderer::SetRoomArray(Array<Room>* rooms)
+void Renderer::SetRoomArray(Array<std::shared_ptr<Room>>* rooms)
 {
     pRooms = rooms;
 }
@@ -66,14 +66,14 @@ void Renderer::Render()
     float halfHeight = (float)windowHeight / 2;
     if (pRooms)
     {
-        for (const Room& room : *pRooms)
+        for (const std::shared_ptr<Room>& room : *pRooms)
         {
-            Array<Vec2> vertices = room.GetVertices();
+            Array<Vec2> vertices = room->GetVertices();
 
             S2D_Color color = fgColor;
             S2D_Color lineColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-            if (room.bMainRoom)
+            if (room->bMainRoom)
             {
                 color = hgColor;
                 lineColor = { 0.95f, 0.95f, 0.95f, 1.0f };

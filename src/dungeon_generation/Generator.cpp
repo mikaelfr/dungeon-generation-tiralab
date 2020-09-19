@@ -56,7 +56,7 @@ void Generator::GenerateRooms()
         // Room width and height max half of circle radius and min 4 units
         float roomWidth = Random::GetRandomValue() * (circleRadius / 2.0f) + 4;
         float roomHeight = Random::GetRandomValue() * (circleRadius / 2.0f) + 4;
-        rooms.Add(Room(roomWidth, roomHeight, pos.x, pos.y));
+        rooms.Add(std::make_shared<Room>(roomWidth, roomHeight, pos.x, pos.y));
     }
 }
 
@@ -73,20 +73,20 @@ bool Generator::SeparateRooms()
             if (i == j)
                 continue;
 
-            Room& r1 = rooms[i];
-            Room& r2 = rooms[j];
+            std::shared_ptr<Room>& r1 = rooms[i];
+            std::shared_ptr<Room>& r2 = rooms[j];
 
-            if (r1.IsColliding(r2))
+            if (r1->IsColliding(*r2))
             {
-                if (r1.DistanceToOrigin() > r2.DistanceToOrigin())
+                if (r1->DistanceToOrigin() > r2->DistanceToOrigin())
                 {
-                    Vec2 v = r2.GetVectorBetween(r1).Normalized();
-                    r1.Move(v);
+                    Vec2 v = r2->GetVectorBetween(*r1).Normalized();
+                    r1->Move(v);
                 }
                 else
                 {
-                    Vec2 v = r1.GetVectorBetween(r2).Normalized();
-                    r2.Move(v);
+                    Vec2 v = r1->GetVectorBetween(*r2).Normalized();
+                    r2->Move(v);
                 }
 
                 bDone = false;
@@ -99,22 +99,19 @@ bool Generator::SeparateRooms()
 
 void Generator::PickRooms()
 {
-    rooms.Sort([](const Room& a, const Room& b) { return (int)(b.width - a.width); });
-    float widthMean = rooms[(int)(rooms.Size() / 2)].width;
+    rooms.Sort([](const std::shared_ptr<Room>& a, const std::shared_ptr<Room>& b) { return (int)(b->width - a->width); });
+    float widthMean = rooms[(int)(rooms.Size() / 2)]->width;
 
-    rooms.Sort([](const Room& a, const Room& b) { return (int)(b.height - a.height); });
-    float heightMean = rooms[(int)(rooms.Size() / 2)].height;
-
-    // Locking array so memory won't be affected
-    rooms.Lock();
+    rooms.Sort([](const std::shared_ptr<Room>& a, const std::shared_ptr<Room>& b) { return (int)(b->height - a->height); });
+    float heightMean = rooms[(int)(rooms.Size() / 2)]->height;
 
     // Pick rooms larger than 1.25 times the mean in width and height
-    for (Room& r : rooms)
+    for (std::shared_ptr<Room>& r : rooms)
     {
-        if (r.width > 1.25f * widthMean && r.height > 1.25f * heightMean)
+        if (r->width > 1.25f * widthMean && r->height > 1.25f * heightMean)
         {
-            r.bMainRoom = true;
-            mainRooms.Add(&r);
+            r->bMainRoom = true;
+            mainRooms.Add(r);
         }
     }
 }

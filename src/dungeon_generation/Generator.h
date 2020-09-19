@@ -30,11 +30,8 @@ private:
     GenerationStep currentStep = NOT_STARTED;
 
     // Hold array here so it need not be passed around constantly
-    Array<Room> rooms;
-    // Points to rooms in above array
-    // Rooms array CANNOT be modified after main rooms have been picked
-    // or I'll have to come up with something else
-    Array<Room*> mainRooms;
+    Array<std::shared_ptr<Room>> rooms;
+    Array<std::shared_ptr<Room>> mainRooms;
 
     void GenerateRooms();
 

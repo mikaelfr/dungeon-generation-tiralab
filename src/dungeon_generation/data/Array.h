@@ -79,8 +79,8 @@ Array<T>::Array(const Array<T>& other)
 
 template <typename T>
 Array<T>::Array(Array<T>&& other)
-    : data(NULL)
-    , dataLength(0)
+    : dataLength(0)
+    , data(NULL)
 {
     data = other.data;
     dataLength = other.dataLength;
