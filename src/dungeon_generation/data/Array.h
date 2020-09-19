@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string.h>
 #include <iostream>
 #include "../util/Memory.h"
@@ -18,6 +19,8 @@ public:
     Array<T>& operator=(Array<T>&& other);
 
     void Add(T value);
+    template <typename... Args>
+    void Add(T v, Args... values);
     int Size();
 
     typedef int (*ComparisonFunction)(const T&, const T&);
@@ -142,6 +145,14 @@ void Array<T>::Add(T value)
     }
 
     data[numElements++] = value;
+}
+
+template <typename T>
+template <typename... Args>
+inline void Array<T>::Add(T v, Args... values)
+{
+    Add(v);
+    (Add(values), ...);
 }
 
 template <typename T>

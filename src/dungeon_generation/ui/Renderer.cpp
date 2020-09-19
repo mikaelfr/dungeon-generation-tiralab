@@ -11,6 +11,7 @@ bool Renderer::bInitialized = false;
 bool Renderer::bHeadless = false;
 S2D_Window* Renderer::pWindow = NULL;
 Array<std::shared_ptr<Room>>* Renderer::pRooms = NULL;
+Array<std::shared_ptr<Room>>* Renderer::pMainRooms = NULL;
 Generator* Renderer::pGenerator = NULL;
 
 S2D_Color Renderer::bgColor = { 0.925f, 0.957f, 0.957f, 1.0f };
@@ -23,7 +24,11 @@ void Renderer::Init(Generator* pGenerator)
         return;
 
     Renderer::pGenerator = pGenerator;
-    pWindow = S2D_CreateWindow("Dungeon Generation", windowWidth, windowHeight, &Renderer::Update, &Renderer::Render, S2D_STRETCH);
+    pWindow = S2D_CreateWindow("Dungeon Generation", windowWidth, windowHeight, &Renderer::Update, &Renderer::Render, 0);
+    pWindow->viewport.mode = S2D_STRETCH;
+    // Turn on 8xMSAA
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
     pWindow->background = bgColor;
     bInitialized = true;
     S2D_Show(pWindow);
@@ -50,9 +55,10 @@ void Renderer::SetHeadless(bool headless)
     bHeadless = headless;
 }
 
-void Renderer::SetRoomArray(Array<std::shared_ptr<Room>>* rooms)
+void Renderer::SetRoomArray(Array<std::shared_ptr<Room>>* pRooms, Array<std::shared_ptr<Room>>* pMainRooms)
 {
-    pRooms = rooms;
+    Renderer::pRooms = pRooms;
+    Renderer::pMainRooms = pMainRooms;
 }
 
 void Renderer::SetGenerator(Generator* pGenerator)
@@ -86,29 +92,46 @@ void Renderer::Render()
                 vertices[3].x + halfWidth, vertices[3].y + halfHeight, color.r, color.g, color.b, color.a);
 
             S2D_DrawLine(
-                vertices[0].x + halfWidth, vertices[0].y + halfHeight, vertices[1].x + halfWidth, vertices[1].y + halfHeight, 1.0f,
+                vertices[0].x + halfWidth, vertices[0].y + halfHeight, vertices[1].x + halfWidth, vertices[1].y + halfHeight, 2.0f,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a);
             S2D_DrawLine(
-                vertices[1].x + halfWidth, vertices[1].y + halfHeight, vertices[2].x + halfWidth, vertices[2].y + halfHeight, 1.0f,
+                vertices[1].x + halfWidth, vertices[1].y + halfHeight, vertices[2].x + halfWidth, vertices[2].y + halfHeight, 2.0f,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a);
             S2D_DrawLine(
-                vertices[2].x + halfWidth, vertices[2].y + halfHeight, vertices[3].x + halfWidth, vertices[3].y + halfHeight, 1.0f,
+                vertices[2].x + halfWidth, vertices[2].y + halfHeight, vertices[3].x + halfWidth, vertices[3].y + halfHeight, 2.0f,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a);
             S2D_DrawLine(
-                vertices[3].x + halfWidth, vertices[3].y + halfHeight, vertices[0].x + halfWidth, vertices[0].y + halfHeight, 1.0f,
+                vertices[3].x + halfWidth, vertices[3].y + halfHeight, vertices[0].x + halfWidth, vertices[0].y + halfHeight, 2.0f,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a);
+        }
+    }
+
+    // Need to do this after because render order
+    for (const std::shared_ptr<Room>& room : *pMainRooms)
+    {
+        const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
+
+        // This draws lines multiple times but ehh
+        for (const std::shared_ptr<Room>& connection : room->connections)
+        {
+            S2D_DrawLine(
+                room->x + halfWidth, room->y + halfHeight, connection->x + halfWidth, connection->y + halfHeight, 2,
+                green.r, green.g, green.b, green.a,
+                green.r, green.g, green.b, green.a,
+                green.r, green.g, green.b, green.a,
+                green.r, green.g, green.b, green.a);
         }
     }
 }

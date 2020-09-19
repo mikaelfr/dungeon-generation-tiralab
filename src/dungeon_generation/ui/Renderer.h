@@ -17,7 +17,7 @@ public:
     static void Destroy();
 
     static void SetHeadless(bool headless);
-    static void SetRoomArray(Array<std::shared_ptr<Room>>* rooms);
+    static void SetRoomArray(Array<std::shared_ptr<Room>>* pRooms, Array<std::shared_ptr<Room>>* pMainRooms);
     static void SetGenerator(class Generator* pGenerator);
 
 private:
@@ -27,6 +27,7 @@ private:
     static bool bHeadless;
     static S2D_Window* pWindow;
     static Array<std::shared_ptr<Room>>* pRooms;
+    static Array<std::shared_ptr<Room>>* pMainRooms;
     static class Generator* pGenerator;
 
     static S2D_Color bgColor;

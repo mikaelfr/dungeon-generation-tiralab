@@ -21,7 +21,7 @@ void Generator::Generate(int seed)
     GenerateRooms();
 
     currentStep = SEPARATE;
-    Renderer::SetRoomArray(&rooms);
+    Renderer::SetRoomArray(&rooms, &mainRooms);
     Renderer::Init(this);
 }
 
@@ -31,6 +31,12 @@ void Generator::Update()
 
     // Intentionally placing these in reverse order
     // so steps is run on the next update
+    if (currentStep == GRAPHING)
+    {
+        GraphRooms();
+        currentStep = HALLWAYS;
+    }
+
     if (currentStep == PICKING)
     {
         PickRooms();
@@ -116,4 +122,12 @@ void Generator::PickRooms()
     }
 }
 
-void Generator::GraphRooms() {}
+void Generator::GraphRooms() 
+{
+    Room::FormTriangle(mainRooms[0], mainRooms[1], mainRooms[2]);
+    for (int i = 3; i < mainRooms.Size(); i++)
+    {
+
+        Room::FormTriangle(mainRooms[i - 2], mainRooms[i - 1], mainRooms[i]);
+    }
+}
