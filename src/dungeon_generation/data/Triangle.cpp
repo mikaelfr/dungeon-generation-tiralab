@@ -58,9 +58,9 @@ Triangle::Edge Triangle::GetClosestVerts(const Vec2& point)
     return Tuple(a, b);
 }
 
-bool Triangle::HasEdge(const Edge edge)
+bool Triangle::HasEdge(const Edge& edge)
 {
-    for (Edge& e : GetEdges())
+    for (Edge e : GetEdges())
     {
         // Probably fine to compare shared pointers, since we shouldnt have multiple copies of the same room
         if (e.key == edge.key && e.value == edge.value)

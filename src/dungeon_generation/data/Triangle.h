@@ -54,7 +54,7 @@ public:
 
     Edge GetClosestVerts(const Vec2& point);
 
-    bool HasEdge(const Edge edge);
+    bool HasEdge(const Edge& edge);
 
     Verts GetVerts();
     Edges GetEdges();

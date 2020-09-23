@@ -175,7 +175,7 @@ bool Generator::GraphRooms()
 
     for (std::shared_ptr<Triangle>& t : badTriangles)
     {
-        for (Triangle::Edge& e : t->GetEdges())
+        for (Triangle::Edge e : t->GetEdges())
         {
             bool sharedByBadTriangle = false;
             for (std::shared_ptr<Triangle>& bt : badTriangles)

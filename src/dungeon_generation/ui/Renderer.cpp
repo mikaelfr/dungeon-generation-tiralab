@@ -124,7 +124,7 @@ void Renderer::Render()
         const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
 
         // This draws lines multiple times but ehh
-        for (Triangle::Edge& edge : triangle->GetEdges())
+        for (Triangle::Edge edge : triangle->GetEdges())
         {
             S2D_DrawLine(
                 edge.key->x + halfWidth, edge.key->y + halfHeight, edge.value->x + halfWidth, edge.value->y + halfHeight, 2,
