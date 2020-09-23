@@ -39,7 +39,6 @@ void Generator::Update()
             PostGraphRooms();
             currentStep = HALLWAYS;
         }
-            
     }
 
     if (currentStep == PICKING)

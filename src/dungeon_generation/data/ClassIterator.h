@@ -1,5 +1,6 @@
 #pragma once
 
+// Class for turning a subset of member variables loopable with for each
 // T type of iterated item, U is the type of the class
 template <typename T, typename U>
 class ClassIterator
@@ -12,7 +13,7 @@ public:
     T operator*();
     void operator++();
     bool operator!=(ClassIterator it);
-    
+
 private:
     int iterator = 0;
 
