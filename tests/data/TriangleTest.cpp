@@ -48,4 +48,67 @@ TEST_SUITE("Test Triangle")
         CHECK(*rest2.key == *a2);
         CHECK(*rest2.value == *b2);
     }
+
+    TEST_CASE("Test HasVertFromSuperTriangle")
+    {
+        std::shared_ptr<Room> a1 = std::make_shared<Room>(1, 1, -3, 3);
+        std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
+        std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
+
+        Triangle t1(a1, b1, c1);
+
+        std::shared_ptr<Room> a2 = std::make_shared<Room>(1, -1, -2, 3);
+        std::shared_ptr<Room> b2 = std::make_shared<Room>(1, 1, 0, 1);
+        std::shared_ptr<Room> c2 = std::make_shared<Room>(-1, -1, 0, -2);
+
+        Triangle t2(a2, b2, c2);
+
+        CHECK(!t1.HasVertFromSuperTriangle());
+        CHECK(t2.HasVertFromSuperTriangle());
+    }
+
+    TEST_CASE("Test GetVerts")
+    {
+        std::shared_ptr<Room> a1 = std::make_shared<Room>(1, 1, -3, 3);
+        std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
+        std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
+
+        Triangle t1(a1, b1, c1);
+
+        Verts v = t1.GetVerts();
+        Verts::iterator it = v.begin();
+        CHECK(a1 == *it);
+        ++it;
+        CHECK(b1 == *it);
+        ++it;
+        CHECK(c1 == *it);
+        ++it;
+        CHECK_FALSE(it != v.end());
+    }
+
+    TEST_CASE("Test GetEdges")
+    {
+        std::shared_ptr<Room> a1 = std::make_shared<Room>(1, 1, -3, 3);
+        std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
+        std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
+
+        Triangle::Edge e1 = Triangle::Edge(a1, b1);
+        Triangle::Edge e2 = Triangle::Edge(b1, c1);
+        Triangle::Edge e3 = Triangle::Edge(c1, a1);
+
+        Triangle t1(a1, b1, c1);
+
+        Edges e = t1.GetEdges();
+        Edges::iterator it = e.begin();
+        CHECK(e1.key == (*it).key);
+        CHECK(e1.value == (*it).value);
+        ++it;
+        CHECK(e2.key == (*it).key);
+        CHECK(e2.value == (*it).value);
+        ++it;
+        CHECK(e3.key == (*it).key);
+        CHECK(e3.value == (*it).value);
+        ++it;
+        CHECK_FALSE(it != e.end());
+    }
 }

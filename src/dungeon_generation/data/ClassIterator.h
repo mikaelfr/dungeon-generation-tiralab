@@ -12,7 +12,7 @@ public:
 
     T operator*();
     void operator++();
-    bool operator!=(ClassIterator it);
+    bool operator!=(ClassIterator it) const;
 
 private:
     int iterator = 0;
@@ -42,7 +42,7 @@ inline void ClassIterator<T, U>::operator++()
 }
 
 template <typename T, typename U>
-inline bool ClassIterator<T, U>::operator!=(ClassIterator it)
+inline bool ClassIterator<T, U>::operator!=(ClassIterator it) const
 {
     return iterator != it.iterator;
 }

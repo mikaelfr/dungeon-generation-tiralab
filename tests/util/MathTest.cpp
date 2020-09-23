@@ -21,6 +21,10 @@ TEST_SUITE("Test Math")
             CHECK(Math::Min(0.5f, 9.0f) == 0.5f);
             CHECK(Math::Min(1.0f, 1.0f) == 1.0f);
             CHECK(Math::Min(-6.0f, 4.0f) == -6.0f);
+
+            CHECK(Math::Min(1, 9) == 1);
+            CHECK(Math::Min(1, 1) == 1);
+            CHECK(Math::Min(-6, 4) == -6);
         }
 
         // Test Max
@@ -29,6 +33,20 @@ TEST_SUITE("Test Math")
             CHECK(Math::Max(0.5f, 9.0f) == 9.0f);
             CHECK(Math::Max(1.0f, 1.0f) == 1.0f);
             CHECK(Math::Max(-6.0f, 4.0f) == 4.0f);
+
+            CHECK(Math::Max(1, 9) == 9);
+            CHECK(Math::Max(1, 1) == 1);
+            CHECK(Math::Max(-6, 4) == 4);
+        }
+    }
+
+    TEST_CASE("Test GetRandomPointInCircle")
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            Vec2 p = Math::GetRandomPointInCircle(10);
+            float length = (p - Vec2(0, 0)).Length();
+            CHECK(length <= 10);
         }
     }
 
