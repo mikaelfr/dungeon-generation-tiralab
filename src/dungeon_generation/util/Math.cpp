@@ -11,22 +11,22 @@ Vec2 Math::GetRandomPointInCircle(int radius)
     return Vec2(radius * r * cos(t), radius * r * sin(t));
 }
 
-inline int Math::Min(int a, int b)
+int Math::Min(int a, int b)
 {
     return (a > b) ? b : a;
 }
 
-inline int Math::Max(int a, int b)
+int Math::Max(int a, int b)
 {
     return (a > b) ? a : b;
 }
 
-inline float Math::Min(float a, float b)
+float Math::Min(float a, float b)
 {
     return (a > b) ? b : a;
 }
 
-inline float Math::Max(float a, float b)
+float Math::Max(float a, float b)
 {
     return (a > b) ? a : b;
 }
@@ -49,5 +49,5 @@ float Math::Determinant(Vec2 a, Vec2 b, Vec2 c, Vec2 d)
 
 bool Math::IsClockwise(Vec2 a, Vec2 b, Vec2 c)
 {
-    return (b.x - a.x) * (b.y + a.y) + (c.x - b.x) * (c.y + b.y) + (a.x - c.x) * (a.y + c.y) < 0;
+    return (b.x - a.x) * (b.y + a.y) + (c.x - b.x) * (c.y + b.y) + (a.x - c.x) * (a.y + c.y) > 0;
 }

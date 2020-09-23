@@ -18,9 +18,13 @@ public:
     Array<T>& operator=(const Array<T>& other);
     Array<T>& operator=(Array<T>&& other);
 
-    void Add(T value);
+    // Returns inserted value
+    T& Add(T value);
     template <typename... Args>
     void Add(T v, Args... values);
+    // Removes max one element per call
+    // Requires operator == to exist for T
+    void Remove(T v);
     int Size();
 
     typedef int (*ComparisonFunction)(const T&, const T&);
@@ -37,6 +41,9 @@ public:
 
     T operator[](int i) const { return data[i]; }
     T& operator[](int i) { return data[i]; }
+
+    T Last() const { return data[numElements - 1]; }
+    T& Last() { return data[numElements - 1]; }
 
     // Locks the array, permitting no operations that could modify memory
     void Lock();
@@ -134,7 +141,7 @@ inline Array<T>& Array<T>::operator=(Array<T>&& other)
 }
 
 template <typename T>
-void Array<T>::Add(T value)
+T& Array<T>::Add(T value)
 {
     if (bLocked)
         throw "This array is currently locked. Add not in use.";
@@ -145,6 +152,7 @@ void Array<T>::Add(T value)
     }
 
     data[numElements++] = value;
+    return data[numElements - 1];
 }
 
 template <typename T>
@@ -153,6 +161,23 @@ inline void Array<T>::Add(T v, Args... values)
 {
     Add(v);
     (Add(values), ...);
+}
+
+template <typename T>
+inline void Array<T>::Remove(T v)
+{
+    if (bLocked)
+        throw "This array is currently locked. Remove not in use.";
+
+    for (int i = 0; i < Size(); i++)
+    {
+        if (data[i] == v)
+        {
+            std::move(begin() + i + 1, end(), data + i);
+            numElements--;
+            return;
+        }
+    }
 }
 
 template <typename T>

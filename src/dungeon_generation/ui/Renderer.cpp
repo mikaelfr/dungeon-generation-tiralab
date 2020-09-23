@@ -11,7 +11,7 @@ bool Renderer::bInitialized = false;
 bool Renderer::bHeadless = false;
 S2D_Window* Renderer::pWindow = NULL;
 Array<std::shared_ptr<Room>>* Renderer::pRooms = NULL;
-Array<std::shared_ptr<Room>>* Renderer::pMainRooms = NULL;
+Array<std::shared_ptr<Triangle>>* Renderer::pTriangles = NULL;
 Generator* Renderer::pGenerator = NULL;
 
 S2D_Color Renderer::bgColor = { 0.925f, 0.957f, 0.957f, 1.0f };
@@ -55,10 +55,10 @@ void Renderer::SetHeadless(bool headless)
     bHeadless = headless;
 }
 
-void Renderer::SetRoomArray(Array<std::shared_ptr<Room>>* pRooms, Array<std::shared_ptr<Room>>* pMainRooms)
+void Renderer::SetRoomArray(Array<std::shared_ptr<Room>>* pRooms, Array<std::shared_ptr<Triangle>>* pTriangles)
 {
     Renderer::pRooms = pRooms;
-    Renderer::pMainRooms = pMainRooms;
+    Renderer::pTriangles = pTriangles;
 }
 
 void Renderer::SetGenerator(Generator* pGenerator)
@@ -119,15 +119,15 @@ void Renderer::Render()
     }
 
     // Need to do this after because render order
-    for (const std::shared_ptr<Room>& room : *pMainRooms)
+    for (const std::shared_ptr<Triangle>& triangle : *pTriangles)
     {
         const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
 
         // This draws lines multiple times but ehh
-        for (const std::shared_ptr<Room>& connection : room->connections)
+        for (Triangle::Edge& edge : triangle->GetEdges())
         {
             S2D_DrawLine(
-                room->x + halfWidth, room->y + halfHeight, connection->x + halfWidth, connection->y + halfHeight, 2,
+                edge.key->x + halfWidth, edge.key->y + halfHeight, edge.value->x + halfWidth, edge.value->y + halfHeight, 2,
                 green.r, green.g, green.b, green.a,
                 green.r, green.g, green.b, green.a,
                 green.r, green.g, green.b, green.a,

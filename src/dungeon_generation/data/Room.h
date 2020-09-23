@@ -13,16 +13,20 @@ struct Room
     Vec2 Move(const Vec2& dir);
     Array<Vec2> GetVertices(float scale = 1.0f) const;
     float DistanceToOrigin() const;
-
-    static void FormTriangle(const std::shared_ptr<Room>& a, const std::shared_ptr<Room>& b, const std::shared_ptr<Room>& c);
+    inline Vec2 GetPos() const
+    {
+        return Vec2(x, y);
+    }
 
     bool operator==(const Room& other) const;
+    inline operator Vec2() const
+    {
+        return GetPos();
+    }
 
     float width;
     float height;
     float x;
     float y;
     bool bMainRoom;
-
-    Array<std::shared_ptr<Room>> connections;
 };

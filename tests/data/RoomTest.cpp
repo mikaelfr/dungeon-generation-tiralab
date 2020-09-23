@@ -48,4 +48,13 @@ TEST_SUITE("Test Room")
         CHECK(r2.Move(Vec2(0, 10)) == Vec2(5, 5));
         CHECK(r2.Move(Vec2(0, 0)) == Vec2(5, 5));
     }
+
+    TEST_CASE("Test position and conversion")
+    {
+        Room r1(20, 30, 10, 10);
+        Room r2(10, 10, 5, -5);
+
+        CHECK(Vec2(10, 10) == r1);
+        CHECK(Vec2(5, -5) == r2);
+    }
 }

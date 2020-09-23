@@ -15,12 +15,6 @@ TEST_SUITE("Test Math")
             CHECK(Math::Abs(0.0f) == 0.0f);
         }
 
-        /*
-        Commenting these away for now,
-        library isn't using these functions so compiler is optimizing away
-        unused static functions which means we cannot use them here either
-        Lovely isn't it!
-
         // Test Min
         SUBCASE("Test Min")
         {
@@ -35,6 +29,39 @@ TEST_SUITE("Test Math")
             CHECK(Math::Max(0.5f, 9.0f) == 9.0f);
             CHECK(Math::Max(1.0f, 1.0f) == 1.0f);
             CHECK(Math::Max(-6.0f, 4.0f) == 4.0f);
-        }*/
+        }
+    }
+
+    TEST_CASE("Test IsClockwise")
+    {
+        Vec2 a1(-3, 3);
+        Vec2 b1(-4, -1);
+        Vec2 c1(-2, -3);
+
+        CHECK(!Math::IsClockwise(a1, b1, c1));
+        CHECK(Math::IsClockwise(c1, b1, a1));
+
+        Vec2 a2(-2, 3);
+        Vec2 b2(0, 1);
+        Vec2 c2(0, -2);
+
+        CHECK(Math::IsClockwise(a2, b2, c2));
+        CHECK(!Math::IsClockwise(c2, b2, a2));
+    }
+
+    TEST_CASE("Test Determinant")
+    {
+        Vec2 a1(-3, 3);
+        Vec2 b1(-4, -1);
+        Vec2 c1(-2, -3);
+
+        Vec2 a2(-2, 3);
+        Vec2 b2(0, 1);
+        Vec2 c2(0, -2);
+
+        Vec2 point(2, 2);
+
+        CHECK(Math::Determinant(a1, b1, c1, point) == 24);
+        CHECK(Math::Determinant(c2, b2, a2, point) == -132);
     }
 }

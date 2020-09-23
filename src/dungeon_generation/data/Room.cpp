@@ -54,13 +54,6 @@ float Room::DistanceToOrigin() const
     return Vec2(x, y).Length();
 }
 
-void Room::FormTriangle(const std::shared_ptr<Room>& a, const std::shared_ptr<Room>& b, const std::shared_ptr<Room>& c)
-{
-    a->connections.Add(b, c);
-    b->connections.Add(a, c);
-    c->connections.Add(a, b);
-}
-
 bool Room::operator==(const Room& other) const
 {
     return x == other.x && y == other.y && width == other.width && height == other.height;

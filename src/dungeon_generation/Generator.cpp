@@ -21,7 +21,7 @@ void Generator::Generate(int seed)
     GenerateRooms();
 
     currentStep = SEPARATE;
-    Renderer::SetRoomArray(&rooms, &mainRooms);
+    Renderer::SetRoomArray(&rooms, &triangles);
     Renderer::Init(this);
 }
 
@@ -31,15 +31,21 @@ void Generator::Update()
 
     // Intentionally placing these in reverse order
     // so steps is run on the next update
-    if (currentStep == GRAPHING)
+    if (currentStep == GRAPHING && numUpdates >= 30)
     {
-        GraphRooms();
-        currentStep = HALLWAYS;
+        numUpdates = 0;
+        if (GraphRooms())
+        {
+            PostGraphRooms();
+            currentStep = HALLWAYS;
+        }
+            
     }
 
     if (currentStep == PICKING)
     {
         PickRooms();
+        PreGraphRooms();
         currentStep = GRAPHING;
     }
 
@@ -122,12 +128,103 @@ void Generator::PickRooms()
     }
 }
 
-void Generator::GraphRooms() 
+void Generator::PreGraphRooms()
 {
-    Room::FormTriangle(mainRooms[0], mainRooms[1], mainRooms[2]);
-    for (int i = 3; i < mainRooms.Size(); i++)
-    {
+    float minX = mainRooms[0]->x;
+    float minY = mainRooms[0]->y;
+    float maxX = mainRooms[0]->x;
+    float maxY = mainRooms[0]->y;
 
-        Room::FormTriangle(mainRooms[i - 2], mainRooms[i - 1], mainRooms[i]);
+    for (const std::shared_ptr<Room>& room : mainRooms)
+    {
+        minX = Math::Min(minX, room->x);
+        minY = Math::Min(minY, room->y);
+        maxX = Math::Max(maxX, room->x);
+        maxY = Math::Max(maxY, room->y);
+    }
+
+    float extentX = maxX - minX;
+    float extentY = maxY - minY;
+    float maxExtent = Math::Max(extentX, extentY);
+    float midX = (maxX + minX) / 2;
+    float midY = (maxY + minY) / 2;
+
+    // Constructing "broken" rooms with width and height of -1
+    std::shared_ptr<Room> r1 = std::make_shared<Room>(-1, -1, midX - 20 * maxExtent, midY - maxExtent);
+    std::shared_ptr<Room> r2 = std::make_shared<Room>(-1, -1, midX, midY + 20 * maxExtent);
+    std::shared_ptr<Room> r3 = std::make_shared<Room>(-1, -1, midX + 20 * maxExtent, midY - maxExtent);
+
+    triangles.Add(std::make_shared<Triangle>(r1, r2, r3));
+}
+
+// Using Bowyer-Watson algorithm avg. O(n log n), max. O(n^2)
+bool Generator::GraphRooms()
+{
+    std::shared_ptr<Room> room = mainRooms[stepNumber++];
+
+    Array<std::shared_ptr<Triangle>> badTriangles;
+
+    for (std::shared_ptr<Triangle>& t : triangles)
+    {
+        if (!t->IsDelaunay(*room))
+        {
+            badTriangles.Add(t);
+        }
+    }
+
+    Array<Triangle::Edge> polygon;
+
+    for (std::shared_ptr<Triangle>& t : badTriangles)
+    {
+        for (Triangle::Edge& e : t->GetEdges())
+        {
+            bool sharedByBadTriangle = false;
+            for (std::shared_ptr<Triangle>& bt : badTriangles)
+            {
+                // Looking at all OTHER triangles
+                if (t == bt)
+                    continue;
+
+                if (bt->HasEdge(e))
+                {
+                    sharedByBadTriangle = true;
+                    break;
+                }
+            }
+
+            if (!sharedByBadTriangle)
+                polygon.Add(e);
+        }
+    }
+
+    for (std::shared_ptr<Triangle>& t : badTriangles)
+    {
+        triangles.Remove(t);
+    }
+
+    for (Triangle::Edge& edge : polygon)
+    {
+        triangles.Add(std::make_shared<Triangle>(edge.key, room, edge.value));
+    }
+
+    if (stepNumber == mainRooms.Size())
+        return true;
+
+    return false;
+}
+
+void Generator::PostGraphRooms()
+{
+    Array<std::shared_ptr<Triangle>> badTriangles;
+
+    for (const std::shared_ptr<Triangle>& t : triangles)
+    {
+        if (t->HasVertFromSuperTriangle())
+            badTriangles.Add(t);
+    }
+
+    for (const std::shared_ptr<Triangle>& t : badTriangles)
+    {
+        triangles.Remove(t);
     }
 }

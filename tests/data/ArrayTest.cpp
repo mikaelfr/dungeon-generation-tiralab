@@ -53,11 +53,30 @@ TEST_SUITE("Test Array")
         CHECK_THROWS(arr = Array<int>());
         CHECK_THROWS(arr.Add(2));
         CHECK_THROWS(arr.Sort([](const int& a, const int& b) { return b - a; }));
+        CHECK_THROWS(arr.Remove(3));
 
         arr.Unlock();
         CHECK_NOTHROW(arr.Add(2));
         CHECK_NOTHROW(arr.Sort([](const int& a, const int& b) { return b - a; }));
         CHECK_NOTHROW(arr = arr2);
         CHECK_NOTHROW(arr = Array<int>());
+        CHECK_NOTHROW(arr.Remove(3));
+    }
+
+    TEST_CASE("Test remove")
+    {
+        Array<int> arr;
+        arr.Add(5, 5, 6, 9, 21, 31, 0);
+        
+        arr.Remove(5);
+        CHECK(arr.Size() == 6);
+        arr.Remove(0);
+        CHECK(arr.Size() == 5);
+        CHECK(arr[2] == 9);
+        arr.Add(2);
+        CHECK(arr.Size() == 6);
+        arr.Remove(21);
+        CHECK(arr.Size() == 5);
+        CHECK(arr[4] == 2);
     }
 }

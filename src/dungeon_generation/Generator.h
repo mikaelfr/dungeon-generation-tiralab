@@ -2,6 +2,7 @@
 
 #include "data/Array.h"
 #include "data/Room.h"
+#include "data/Triangle.h"
 
 class Generator
 {
@@ -28,15 +29,19 @@ private:
 
     int numUpdates = 0;
     GenerationStep currentStep = NOT_STARTED;
+    int stepNumber = 0;
 
     // Hold array here so it need not be passed around constantly
     Array<std::shared_ptr<Room>> rooms;
     Array<std::shared_ptr<Room>> mainRooms;
+    Array<std::shared_ptr<Triangle>> triangles;
 
     void GenerateRooms();
 
     // Returns true if done with separating
     bool SeparateRooms();
     void PickRooms();
-    void GraphRooms();
+    void PreGraphRooms();
+    bool GraphRooms();
+    void PostGraphRooms();
 };
