@@ -40,8 +40,8 @@ TEST_SUITE("Test Triangle")
 
         Vec2 point(2, 2);
 
-        Triangle::Edge rest1 = t1.GetClosestVerts(point);
-        Triangle::Edge rest2 = t2.GetClosestVerts(point);
+        Edge rest1 = t1.GetClosestVerts(point);
+        Edge rest2 = t2.GetClosestVerts(point);
 
         CHECK(*rest1.key == *a1);
         CHECK(*rest1.value == *c1);
@@ -73,9 +73,9 @@ TEST_SUITE("Test Triangle")
         std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
         std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
 
-        Triangle::Edge e11 = Triangle::Edge(a1, b1);
-        Triangle::Edge e12 = Triangle::Edge(b1, c1);
-        Triangle::Edge e13 = Triangle::Edge(c1, a1);
+        Edge e11 = Edge(a1, b1);
+        Edge e12 = Edge(b1, c1);
+        Edge e13 = Edge(c1, a1);
 
         Triangle t1(a1, b1, c1);
 
@@ -83,19 +83,23 @@ TEST_SUITE("Test Triangle")
         std::shared_ptr<Room> b2 = std::make_shared<Room>(1, 1, 0, 1);
         std::shared_ptr<Room> c2 = std::make_shared<Room>(-1, -1, 0, -2);
 
-        Triangle::Edge e21 = Triangle::Edge(a2, b2);
-        Triangle::Edge e22 = Triangle::Edge(b2, c2);
-        Triangle::Edge e23 = Triangle::Edge(c2, a2);
+        Edge e21 = Edge(a2, b2);
+        Edge e22 = Edge(c2, b2);
+        Edge e23 = Edge(c2, a2);
+
+        Edge e31 = Edge(c2, a2);
 
         Triangle t2(a2, b2, c2);
 
         CHECK(t1.HasEdge(e11));
         CHECK(t1.HasEdge(e12));
         CHECK(t1.HasEdge(e13));
+        CHECK(!t1.HasEdge(e23));
 
         CHECK(t2.HasEdge(e21));
         CHECK(t2.HasEdge(e22));
         CHECK(t2.HasEdge(e23));
+        CHECK(!t2.HasEdge(e11));
     }
 
     TEST_CASE("Test GetVerts")
@@ -123,9 +127,9 @@ TEST_SUITE("Test Triangle")
         std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
         std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
 
-        Triangle::Edge e1 = Triangle::Edge(a1, b1);
-        Triangle::Edge e2 = Triangle::Edge(b1, c1);
-        Triangle::Edge e3 = Triangle::Edge(c1, a1);
+        Edge e1 = Edge(a1, b1);
+        Edge e2 = Edge(b1, c1);
+        Edge e3 = Edge(c1, a1);
 
         Triangle t1(a1, b1, c1);
 

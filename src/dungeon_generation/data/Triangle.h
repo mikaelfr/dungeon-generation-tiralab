@@ -9,6 +9,22 @@
 // Forward def for Verts and Edges
 class Triangle;
 
+struct Edge : public Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>
+{
+    Edge()
+        : Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>() {}
+
+    Edge(std::shared_ptr<Room> a, std::shared_ptr<Room> b)
+        : Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>(a, b) {}
+
+    // Undirected
+    inline bool operator==(const Edge& other) const
+    {
+        return (this->key == other.key && this->value == other.value) ||
+                (this->key == other.value && this->value == other.key);
+    }
+};
+
 struct Verts
 {
     Verts(Triangle* pTriangle);
@@ -28,7 +44,7 @@ struct Edges
 {
     Edges(Triangle* pTriangle);
 
-    typedef ClassIterator<Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>, Edges> iterator;
+    typedef ClassIterator<Edge, Edges> iterator;
 
     // Marking as static so we can define it in cpp file
     static iterator::GetElementFunction lambda;
@@ -42,8 +58,6 @@ struct Edges
 class Triangle
 {
 public:
-    typedef Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>> Edge;
-
     Triangle();
     Triangle(std::shared_ptr<Room> a, std::shared_ptr<Room> b, std::shared_ptr<Room> c);
 

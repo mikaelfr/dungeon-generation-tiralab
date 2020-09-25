@@ -37,7 +37,7 @@ bool Triangle::HasVertFromSuperTriangle()
     return false;
 }
 
-Triangle::Edge Triangle::GetClosestVerts(const Vec2& point)
+Edge Triangle::GetClosestVerts(const Vec2& point)
 {
     float aLen = (*a - point).Length();
     float bLen = (*b - point).Length();
@@ -48,14 +48,14 @@ Triangle::Edge Triangle::GetClosestVerts(const Vec2& point)
     switch (largest)
     {
         case 0:
-            return Tuple(b, c);
+            return Edge(b, c);
         case 1:
-            return Tuple(a, c);
+            return Edge(a, c);
         case 2:
-            return Tuple(a, b);
+            return Edge(a, b);
     }
 
-    return Tuple(a, b);
+    return Edge(a, b);
 }
 
 bool Triangle::HasEdge(const Edge& edge)
@@ -125,11 +125,11 @@ Edges::iterator::GetElementFunction Edges::lambda = [](int it, Edges* pThis) {
     switch (it)
     {
         case 0:
-            return Triangle::Edge(pThis->pTriangle->a, pThis->pTriangle->b);
+            return Edge(pThis->pTriangle->a, pThis->pTriangle->b);
         case 1:
-            return Triangle::Edge(pThis->pTriangle->b, pThis->pTriangle->c);
+            return Edge(pThis->pTriangle->b, pThis->pTriangle->c);
         case 2:
-            return Triangle::Edge(pThis->pTriangle->c, pThis->pTriangle->a);
+            return Edge(pThis->pTriangle->c, pThis->pTriangle->a);
     }
 
     throw "Iterator out of range";

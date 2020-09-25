@@ -14,6 +14,7 @@ public:
         SEPARATE,
         PICKING,
         GRAPHING,
+        SPANNING_TREE,
         HALLWAYS
     };
 
@@ -35,6 +36,7 @@ private:
     Array<std::shared_ptr<Room>> rooms;
     Array<std::shared_ptr<Room>> mainRooms;
     Array<std::shared_ptr<Triangle>> triangles;
+    Set<Edge> edges;
 
     void GenerateRooms();
 
@@ -44,4 +46,5 @@ private:
     void PreGraphRooms();
     bool GraphRooms();
     void PostGraphRooms();
+    void MinimumSpanningTree();
 };

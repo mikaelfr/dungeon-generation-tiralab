@@ -2,6 +2,7 @@
 
 #include "../util/Math.h"
 #include "Array.h"
+#include "Set.h"
 
 struct Room
 {

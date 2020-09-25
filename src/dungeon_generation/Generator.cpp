@@ -171,11 +171,11 @@ bool Generator::GraphRooms()
         }
     }
 
-    Array<Triangle::Edge> polygon;
+    Array<Edge> polygon;
 
     for (std::shared_ptr<Triangle>& t : badTriangles)
     {
-        for (Triangle::Edge e : t->GetEdges())
+        for (Edge e : t->GetEdges())
         {
             bool sharedByBadTriangle = false;
             for (std::shared_ptr<Triangle>& bt : badTriangles)
@@ -201,7 +201,7 @@ bool Generator::GraphRooms()
         triangles.Remove(t);
     }
 
-    for (Triangle::Edge& edge : polygon)
+    for (Edge& edge : polygon)
     {
         triangles.Add(std::make_shared<Triangle>(edge.key, room, edge.value));
     }
@@ -216,14 +216,34 @@ void Generator::PostGraphRooms()
 {
     Array<std::shared_ptr<Triangle>> badTriangles;
 
+    // Remove bad triangles and create adjacency lists
     for (const std::shared_ptr<Triangle>& t : triangles)
     {
         if (t->HasVertFromSuperTriangle())
+        {
             badTriangles.Add(t);
+        }
+        else
+        {
+            // Set guarantees we will not have duplicate edges
+            edges.Add(Edge(t->a, t->b));
+            edges.Add(Edge(t->b, t->c));
+            edges.Add(Edge(t->c, t->a));
+        }
+
     }
 
     for (const std::shared_ptr<Triangle>& t : badTriangles)
     {
         triangles.Remove(t);
+    }
+}
+
+void Generator::MinimumSpanningTree()
+{
+    Set<Edge> edges;
+    for (std::shared_ptr<Room>& room : mainRooms)
+    {
+
     }
 }
