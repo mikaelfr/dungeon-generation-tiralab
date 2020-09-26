@@ -25,9 +25,9 @@ jobs:
         - 7z x simple2d.zip -osimple2d
         - cd simple2d
         - dir
-        - robocopy bin ..\\libs\\simple2d\\
-        - robocopy include ..\\libs\\simple2d\\
-        - robocopy lib ..\\libs\\simple2d\\
+        - xcopy bin\\* ..\\libs\\simple2d\\ /E /H
+        - xcopy include\\* ..\\libs\\simple2d\\ /E /H
+        - xcopy lib\\* ..\\libs\\simple2d\\ /E /H
         - cd ..
         - dir
         # Build
