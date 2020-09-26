@@ -24,10 +24,9 @@ jobs:
         - wget -O simple2d.zip https://github.com/simple2d/simple2d/releases/download/v1.2.0/simple2d-windows-mingw-1.2.0.zip
         - 7z x simple2d.zip -osimple2d
         - cd simple2d
-        - mkdir ../libs/simple2d
-        - xcopy bin/* ../libs/simple2d/ /E /H /I
-        - xcopy include/* ../libs/simple2d/ /E/ H /I
-        - xcopy lib/* ../libs/simple2d/ /E /H /I
+        - xcopy bin\* ..\libs\simple2d\ /E /H /I
+        - xcopy include\* ..\libs\simple2d\ /E/ H /I
+        - xcopy lib\* ..\libs\simple2d\ /E /H /I
         - cd ..
         # Build
         - mkdir build
