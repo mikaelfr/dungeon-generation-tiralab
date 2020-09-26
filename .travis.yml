@@ -29,7 +29,8 @@ jobs:
         # Build
         - mkdir build
         - cd build
-        - $mingw64 cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_TESTS=ON .. 
+        - where gcc
+        - cmake ${CMAKE_OPTIONS} -G "MinGW Makefiles" -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_TESTS=ON .. 
         - $mingw64 make
       
       before_install:
