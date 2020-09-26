@@ -230,7 +230,6 @@ void Generator::PostGraphRooms()
             edges.Add(Edge(t->b, t->c));
             edges.Add(Edge(t->c, t->a));
         }
-
     }
 
     for (const std::shared_ptr<Triangle>& t : badTriangles)
@@ -244,6 +243,5 @@ void Generator::MinimumSpanningTree()
     Set<Edge> edges;
     for (std::shared_ptr<Room>& room : mainRooms)
     {
-
     }
 }

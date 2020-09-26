@@ -7,7 +7,7 @@ public:
     DisjointSet(T value);
 
     DisjointSet<T>& Find(DisjointSet<T>* x);
-    
+
     // Union
     DisjointSet<T>& operator+=(const DisjointSet<T>& other);
 

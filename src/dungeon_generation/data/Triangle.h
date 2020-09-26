@@ -12,16 +12,20 @@ class Triangle;
 struct Edge : public Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>
 {
     Edge()
-        : Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>() {}
+        : Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>()
+    {
+    }
 
     Edge(std::shared_ptr<Room> a, std::shared_ptr<Room> b)
-        : Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>(a, b) {}
+        : Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>(a, b)
+    {
+    }
 
     // Undirected
     inline bool operator==(const Edge& other) const
     {
         return (this->key == other.key && this->value == other.value) ||
-                (this->key == other.value && this->value == other.key);
+               (this->key == other.value && this->value == other.key);
     }
 };
 
