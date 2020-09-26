@@ -168,3 +168,12 @@ jobs:
        - make dungeon_generator
        - valgrind --leak-check=full --track-origins=yes ./src/dungeon_generator --headless
     
+deploy:
+  provider: releases
+  api_key:
+    secure: sb1/I6kFC2faFvxdG48TlUM6vrfk7k6Er8umD/zfwFy4DoHyWpiBv9IGdR4MfN9OU5TcaoCd9IupTmkwaU04pHxMurmNSwkFV3SfW+Udf78+JgBakc5WwjvbKHP9MZy0D6gj+JjIyMhNXvDGt6RqrIOLkGpYvJsqxu45gH4cS+LTSqDHa2fNhVL9Mva5J10dm1WCF0gCi3REWl7sssV7aw8qZ5uVmA9Jcc6Qkm+fPoH4XZljEDqpUWdqvN5nqdfJLewW/i8DaVmjj03/1tLky7Q1fg29IXKvq/B7KuWcF1MB8c1pe9Afusk98j5w8TV+5CLk2C5HUQ3v4abMU9cB0F64J6g91qXzIYDzWkrp8zSi+nMkrVxdhf0W81tAvMOMAXAxb4wM8AgskThg7h7dDmVllSl4ezQYLP4SQJGMy+W/K95FH+5K9yZ+8ujsUvkNGuL/FwjBu1UHBAazrGof5+FBP50ibDjsOnlRYwhkCWsFpQ4pfSa8vKdZWS0HuhkkGMNx2t11jBpn+1fY6dtm0W+lUXDUIftd0ZOh33PzFx+a8NgloNHgqOTM83PuyQ+FDuapx+9hTIn7NznY4/5OFjioGbN0zlAyYQ1q+l2TM0Mzah5XqLU1ZOsys9SYJBZDqNMxQpnH5RAFBa2/fEP5KymfE3HoBNnnoGnVIjNGHD8=
+  file: src/dungeon_generator
+  on:
+    repo: mikaelfr/dungeon-generation-tiralab
+    tags: true
+  skip_cleanup: true
