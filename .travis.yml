@@ -18,13 +18,14 @@ jobs:
   include:
     - stage: Windows
       name: "Build for Windows"
-      os: Windows
+      os: windows
       script:
         # Install simple2d
         - wget -O simple2d.zip https://github.com/simple2d/simple2d/releases/download/v1.2.0/simple2d-windows-mingw-1.2.0.zip
         - 7z x simple2d.zip -osimple2d
         - cd simple2d
-        - $mingw64 install.sh -y
+        - $mingw64 sh install.sh -y
+        - cd ..
         # Build
         - mkdir build
         - cd build
