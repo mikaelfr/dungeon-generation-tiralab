@@ -25,10 +25,11 @@ jobs:
         - 7z x simple2d.zip -osimple2d
         - cd simple2d
         - dir
-        - xcopy bin\* ..\libs\simple2d\ /E /H /I
-        - xcopy include\* ..\libs\simple2d\ /E /H /I
-        - xcopy lib\* ..\libs\simple2d\ /E /H /I
+        - xcopy bin\* ..\libs\simple2d\ /e /h /i /y /f
+        - xcopy include\* ..\libs\simple2d\ /e /h /i /y /f
+        - xcopy lib\* ..\libs\simple2d\ /e /h /i /y /f
         - cd ..
+        - dir
         # Build
         - mkdir build
         - cd build
