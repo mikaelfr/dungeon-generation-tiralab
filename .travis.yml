@@ -25,9 +25,9 @@ jobs:
         - 7z x simple2d.zip -osimple2d
         - cd simple2d
         - dir
-        - (robocopy bin ..\\libs\\simple2d\\ *.* /E) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0
-        - (robocopy include ..\\libs\\simple2d\\ *.* /E) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0
-        - (robocopy lib ..\\libs\\simple2d\\ *.* /E) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0
+        - (robocopy bin ..\\libs\\simple2d\\ *.* /E) ^& exit 0
+        - (robocopy include ..\\libs\\simple2d\\ *.* /E) ^& exit 0
+        - (robocopy lib ..\\libs\\simple2d\\ *.* /E) ^& exit 0
         - cd ..
         - dir
         # Build
