@@ -40,7 +40,7 @@ jobs:
         - $mingw64 mingw32-make VERBOSE=1
         - mkdir zipping
         - xcopy ..\\simple2d\\bin\\* zipping\\
-        - xcopy src\\dungeon_generation.exe zipping\\
+        - xcopy src\\dungeon_generator.exe zipping\\
         - cd zipping
         - 7z a dungeon_generator.zip *
         - cd ..
