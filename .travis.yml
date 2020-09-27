@@ -31,6 +31,7 @@ jobs:
         - xcopy lib\\* ..\\libs\\simple2d\\
         - cd ..
         - dir
+        - dir libs\\simple2d
         # Build
         - mkdir build
         - cd build
