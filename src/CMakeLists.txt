@@ -8,7 +8,7 @@ add_subdirectory("dungeon_generation")
 
 # On Windows we can just get away with copying dlls next to the exe
 # but on linux we need to actually link the exe with all the libraries
-if(UNIX)
+if(UNIX OR MINGW)
     find_package(SDL2 REQUIRED)
     find_package(SDL2_image REQUIRED)
     find_package(SDL2_mixer REQUIRED)
