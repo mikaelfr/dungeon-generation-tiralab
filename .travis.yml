@@ -40,7 +40,7 @@ jobs:
         - $mingw64 mingw32-make VERBOSE=1
         # Copy deployed files for zipping
         - mkdir zipping
-        - xcopy ..\\simple2d\\bin\\* zipping\\
+        - xcopy ..\\simple2d\\bin\\*.dll zipping\\
         - xcopy src\\dungeon_generator.exe zipping\\
         - xcopy C:\\tools\\msys64\\mingw64\\bin\\libwinpthread-1.dll zipping\\
         - xcopy tests\\dungeon_generator_test.exe zipping\\
