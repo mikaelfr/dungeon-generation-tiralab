@@ -10,7 +10,11 @@ file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "*.h" "*.cpp")
 add_executable(${PROJECT_NAME}_test ${TEST_SOURCES})
 
 # Link library to tests
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib)
+if(MINGW)
+    target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib -static-libgcc -static-libstdc++)
+else()
+    target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME}_lib)
+endif()
 
 # Set properties for test target
 target_include_directories(${PROJECT_NAME}_test PRIVATE ${PROJECT_SOURCE_DIR}/libs/doctest/)
