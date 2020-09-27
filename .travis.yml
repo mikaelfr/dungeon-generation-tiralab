@@ -25,9 +25,9 @@ jobs:
         - 7z x simple2d.zip -osimple2d
         - cd simple2d
         - dir
-        - copy bin\* ..\libs\simple2d\
-        - copy include\* ..\libs\simple2d\
-        - copy lib\* ..\libs\simple2d\
+        - $msys2 cp -fR bin/* ../libs/simple2d/
+        - $msys2 cp -fR include/* ../libs/simple2d/
+        - $msys2 cp -fR lib/* ../libs/simple2d/
         - cd ..
         - dir
         # Build
