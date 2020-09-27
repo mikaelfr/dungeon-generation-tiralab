@@ -23,7 +23,7 @@ if(MINGW)
     find_package(SDL2_image REQUIRED)
     find_package(SDL2_mixer REQUIRED)
     find_package(SDL2_ttf REQUIRED)
-    find_library(GLEW_LIB glew32 HINTS ${PROJECT_SOURCE_DIR}/libs/simple2d/ REQUIRED)
+    find_library(GLEW_LIB NAMES glew glew32 libglew32 HINTS ${PROJECT_SOURCE_DIR}/libs/simple2d/ REQUIRED)
     find_library(SIMPLE2D_LIB simple2d)
 endif()
 
