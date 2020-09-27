@@ -16,68 +16,6 @@ env:
 
 jobs:
   include:
-    - stage: Windows
-      name: "Build for Windows"
-      os: windows
-      script:
-        # Install simple2d
-        - wget -O simple2d.zip https://github.com/simple2d/simple2d/releases/download/v1.2.0/simple2d-windows-mingw-1.2.0.zip
-        - 7z x simple2d.zip -osimple2d
-        - cd simple2d
-        - dir
-        - xcopy bin\\* ..\\libs\\simple2d\\
-        - xcopy include\\* ..\\libs\\simple2d\\
-        - xcopy include\\SDL2\\* ..\\libs\\simple2d\\SDL2\\
-        - xcopy lib\\* ..\\libs\\simple2d\\
-        - cd ..
-        - dir
-        - dir libs\\simple2d
-        # Build
-        - mkdir build
-        - cd build
-        - cmake ${CMAKE_OPTIONS} -G "MinGW Makefiles" -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_TESTS=ON ..
-        - dir
-        - $mingw64 mingw32-make VERBOSE=1
-        # Copy deployed files for zipping
-        - mkdir zipping
-        - xcopy ..\\simple2d\\bin\\*.dll zipping\\
-        - xcopy src\\dungeon_generator.exe zipping\\
-        - xcopy C:\\tools\\msys64\\mingw64\\bin\\libwinpthread-1.dll zipping\\
-        - xcopy tests\\dungeon_generator_test.exe zipping\\
-        - cd zipping
-        - 7z a dungeon_generator.zip *
-        - cd ..
-        - dir
-        - dir src
-      
-      before_install:
-        - |-
-            [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
-            choco uninstall -y mingw
-            choco upgrade --no-progress -y msys2
-            export msys2='cmd //C RefreshEnv.cmd '
-            export msys2+='& set MSYS=winsymlinks:nativestrict '
-            export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
-            export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
-            export msys2+=" -msys2 -c "\"\$@"\" --"
-            $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
-            taskkill //IM gpg-agent.exe //F 
-            export PATH=/C/tools/msys64/mingw64/bin:$PATH
-            export MAKE=mingw32-make 
-
-        # Combine global build options with OS/compiler-dependent options
-        - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-        - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
-      
-      before_cache:
-        - |-
-            $msys2 pacman --sync --clean --noconfirm
-
-      cache:
-        directories:
-          - $HOME/AppData/Local/Temp/chocolatey
-          - /C/tools/msys64
-
     - stage: Checks
       name: "Static Checks"
       os: linux
@@ -230,7 +168,64 @@ jobs:
        # Test for memory leaks
        - make dungeon_generator
        - valgrind --leak-check=full --track-origins=yes ./src/dungeon_generator --headless
-    
+       
+    - stage: Windows
+      name: "Build for Windows"
+      os: windows
+      script:
+        # Install simple2d
+        - wget -O simple2d.zip https://github.com/simple2d/simple2d/releases/download/v1.2.0/simple2d-windows-mingw-1.2.0.zip
+        - 7z x simple2d.zip -osimple2d
+        - cd simple2d
+        - xcopy bin\\* ..\\libs\\simple2d\\
+        - xcopy include\\* ..\\libs\\simple2d\\
+        - xcopy include\\SDL2\\* ..\\libs\\simple2d\\SDL2\\
+        - xcopy lib\\* ..\\libs\\simple2d\\
+        - cd ..
+        # Build
+        - mkdir build
+        - cd build
+        - cmake ${CMAKE_OPTIONS} -G "MinGW Makefiles" -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_TESTS=ON ..
+        - $mingw64 mingw32-make VERBOSE=1
+        # Copy deployed files for zipping
+        - mkdir zipping
+        - xcopy ..\\simple2d\\bin\\*.dll zipping\\
+        - xcopy src\\dungeon_generator.exe zipping\\
+        - xcopy C:\\tools\\msys64\\mingw64\\bin\\libwinpthread-1.dll zipping\\
+        - xcopy tests\\dungeon_generator_test.exe zipping\\
+        - cd zipping
+        - 7z a dungeon_generator.zip *
+        - cd ..
+      
+      before_install:
+        - |-
+            [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
+            choco uninstall -y mingw
+            choco upgrade --no-progress -y msys2
+            export msys2='cmd //C RefreshEnv.cmd '
+            export msys2+='& set MSYS=winsymlinks:nativestrict '
+            export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
+            export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
+            export msys2+=" -msys2 -c "\"\$@"\" --"
+            $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
+            taskkill //IM gpg-agent.exe //F 
+            export PATH=/C/tools/msys64/mingw64/bin:$PATH
+            export MAKE=mingw32-make 
+
+        # Combine global build options with OS/compiler-dependent options
+        - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
+        - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+      
+      before_cache:
+        - |-
+            $msys2 pacman --sync --clean --noconfirm
+
+      cache:
+        directories:
+          - $HOME/AppData/Local/Temp/chocolatey
+          - /C/tools/msys64
+
+
 deploy:
   provider: releases
   token:
