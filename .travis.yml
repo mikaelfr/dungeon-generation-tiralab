@@ -38,7 +38,7 @@ jobs:
         - cmake ${CMAKE_OPTIONS} -G "MinGW Makefiles" -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_TESTS=ON ..
         - dir
         - $mingw64 mingw32-make VERBOSE=1
-        - xcopy simple2d\\bin\\* src\\
+        - xcopy ..\\simple2d\\bin\\* src\\
         - 7z a src\\dungeon_generator.zip src\\*
         - dir
         - dir src
@@ -150,6 +150,7 @@ jobs:
        - make
        - make dungeon_generator_coverage
        - ctest
+       - ls
        
       after_success:
        - codecov -X gcov
