@@ -38,6 +38,8 @@ jobs:
         - cmake ${CMAKE_OPTIONS} -G "MinGW Makefiles" -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_TESTS=ON ..
         - dir
         - $mingw64 mingw32-make VERBOSE=1
+        - dir
+        - dir src
       
       before_install:
         - |-
@@ -226,6 +228,8 @@ deploy:
   file:
     - src/dungeon_generator
     - tests/dungeon_generator_test
+    - src/dungeon_generator.exe
+    - tests/dungeon_generator_test.exe
   on:
     repo: mikaelfr/dungeon-generation-tiralab
     tags: true
