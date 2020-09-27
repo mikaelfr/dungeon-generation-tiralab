@@ -8,3 +8,10 @@
 
 ## Documentation
 [Project specification](https://github.com/mikaelfr/dungeon-generation-tiralab/blob/master/docs/project_spec.md)
+
+## Installation
+
+
+## Troubleshooting
+
+If SDL cannot find matching GLX visual on linux, take a look at [this](https://stackoverflow.com/questions/41338549/sdl2-cant-create-window-since-it-couldnt-find-matching-glx-visual).
