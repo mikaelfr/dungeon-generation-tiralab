@@ -23,6 +23,7 @@ jobs:
         # Install simple2d
         - wget -O simple2d.zip https://github.com/simple2d/simple2d/releases/download/v1.2.0/simple2d-windows-mingw-1.2.0.zip
         - 7z x simple2d.zip -osimple2d
+        - Remove-Item simple2d.zip
         - cd simple2d
         - dir
         - xcopy bin\\* ..\\libs\\simple2d\\
@@ -37,7 +38,7 @@ jobs:
         - cd build
         - cmake ${CMAKE_OPTIONS} -G "MinGW Makefiles" -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_TESTS=ON ..
         - dir
-        - $mingw64 mingw32-make
+        - $mingw64 mingw32-make VERBOSE=1
       
       before_install:
         - |-
