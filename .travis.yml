@@ -23,12 +23,12 @@ jobs:
         # Install simple2d
         - wget -O simple2d.zip https://github.com/simple2d/simple2d/releases/download/v1.2.0/simple2d-windows-mingw-1.2.0.zip
         - 7z x simple2d.zip -osimple2d
-        - del simple2d.zip
+        - del /q simple2d.zip
         - cd simple2d
         - dir
-        - xcopy bin\\* ..\\libs\\simple2d\\
-        - xcopy include\\* ..\\libs\\simple2d\\
-        - xcopy lib\\* ..\\libs\\simple2d\\
+        - xcopy bin\\* ..\\libs\\simple2d\\ /E
+        - xcopy include\\* ..\\libs\\simple2d\\ /E
+        - xcopy lib\\* ..\\libs\\simple2d\\ /E
         - cd ..
         - dir
         - dir libs\\simple2d
