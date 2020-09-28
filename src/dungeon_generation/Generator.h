@@ -3,6 +3,7 @@
 #include "data/Array.h"
 #include "data/Room.h"
 #include "data/Triangle.h"
+#include "data/Set.h"
 
 class Generator
 {
@@ -15,8 +16,11 @@ public:
         PICKING,
         GRAPHING,
         SPANNING_TREE,
-        HALLWAYS
+        HALLWAYS,
+        DONE
     };
+
+    typedef Tuple<Vec2, Vec2> Line;
 
     Generator();
     ~Generator();
@@ -37,6 +41,8 @@ private:
     Array<std::shared_ptr<Room>> mainRooms;
     Array<std::shared_ptr<Triangle>> triangles;
     Set<Edge> edges;
+    Array<Edge> selectedEdges;
+    Array<Line> lines;
 
     void GenerateRooms();
 
@@ -47,4 +53,5 @@ private:
     bool GraphRooms();
     void PostGraphRooms();
     void MinimumSpanningTree();
+    void GenerateHallways();
 };

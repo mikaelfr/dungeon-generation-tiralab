@@ -12,11 +12,14 @@ bool Renderer::bHeadless = false;
 S2D_Window* Renderer::pWindow = NULL;
 Array<std::shared_ptr<Room>>* Renderer::pRooms = NULL;
 Array<std::shared_ptr<Triangle>>* Renderer::pTriangles = NULL;
+Array<Edge>* Renderer::pSelectedEdges = NULL;
+Array<Tuple<Vec2, Vec2>>* Renderer::pLines = NULL;
 Generator* Renderer::pGenerator = NULL;
 
 S2D_Color Renderer::bgColor = { 0.925f, 0.957f, 0.957f, 1.0f };
 S2D_Color Renderer::fgColor = { 0.0f, 0.415f, 0.443f, 1.0f };
 S2D_Color Renderer::hgColor = { 1.0f, 0.494f, 0.404f, 1.0f };
+S2D_Color Renderer::hgHallColor = { 0.8f, 0.1f, 0.404f, 1.0f };
 
 void Renderer::Init(Generator* pGenerator)
 {
@@ -55,10 +58,12 @@ void Renderer::SetHeadless(bool headless)
     bHeadless = headless;
 }
 
-void Renderer::SetRoomArray(Array<std::shared_ptr<Room>>* pRooms, Array<std::shared_ptr<Triangle>>* pTriangles)
+void Renderer::SetRoomArray(Array<std::shared_ptr<Room>>* pRooms, Array<std::shared_ptr<Triangle>>* pTriangles, Array<Edge>* pSelectedEdges, Array<Tuple<Vec2, Vec2>>* pLines)
 {
     Renderer::pRooms = pRooms;
     Renderer::pTriangles = pTriangles;
+    Renderer::pSelectedEdges = pSelectedEdges;
+    Renderer::pLines = pLines;
 }
 
 void Renderer::SetGenerator(Generator* pGenerator)
@@ -70,6 +75,7 @@ void Renderer::Render()
 {
     float halfWidth = (float)windowWidth / 2;
     float halfHeight = (float)windowHeight / 2;
+
     if (pRooms)
     {
         for (const std::shared_ptr<Room>& room : *pRooms)
@@ -79,9 +85,14 @@ void Renderer::Render()
             S2D_Color color = fgColor;
             S2D_Color lineColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-            if (room->bMainRoom)
+            if (room->eRoomType == Room::MAIN)
             {
                 color = hgColor;
+                lineColor = { 0.95f, 0.95f, 0.95f, 1.0f };
+            }
+            else if (room->eRoomType == Room::HALLWAY)
+            {
+                color = hgHallColor;
                 lineColor = { 0.95f, 0.95f, 0.95f, 1.0f };
             }
 
@@ -118,13 +129,43 @@ void Renderer::Render()
         }
     }
 
+    if (pLines)
+    {
+        const S2D_Color red = { 1.0f, 0.0f, 0.0f, 1.0f };
+        for (const Tuple<Vec2, Vec2>& l : *pLines)
+        {
+            S2D_DrawLine(
+                l.key.x + halfWidth, l.key.y + halfHeight, l.value.x + halfWidth, l.value.y + halfHeight, 2,
+                red.r, red.g, red.b, red.a,
+                red.r, red.g, red.b, red.a,
+                red.r, red.g, red.b, red.a,
+                red.r, red.g, red.b, red.a);
+        }
+    }
+
     // Need to do this after because render order
-    for (const std::shared_ptr<Triangle>& triangle : *pTriangles)
+    if (pTriangles && pSelectedEdges && pSelectedEdges->Size() == 0)
     {
         const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
 
-        // This draws lines multiple times but ehh
-        for (Edge edge : triangle->GetEdges())
+        for (const std::shared_ptr<Triangle>& triangle : *pTriangles)
+        {
+            // This draws lines multiple times but ehh
+            for (Edge edge : triangle->GetEdges())
+            {
+                S2D_DrawLine(
+                    edge.key->x + halfWidth, edge.key->y + halfHeight, edge.value->x + halfWidth, edge.value->y + halfHeight, 2,
+                    green.r, green.g, green.b, green.a,
+                    green.r, green.g, green.b, green.a,
+                    green.r, green.g, green.b, green.a,
+                    green.r, green.g, green.b, green.a);
+            }
+        }
+    }
+    else
+    {
+        const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
+        for (const Edge& edge : *pSelectedEdges)
         {
             S2D_DrawLine(
                 edge.key->x + halfWidth, edge.key->y + halfHeight, edge.value->x + halfWidth, edge.value->y + halfHeight, 2,

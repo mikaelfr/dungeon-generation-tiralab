@@ -21,7 +21,7 @@ void Generator::Generate(int seed)
     GenerateRooms();
 
     currentStep = SEPARATE;
-    Renderer::SetRoomArray(&rooms, &triangles);
+    Renderer::SetRoomArray(&rooms, &triangles, &selectedEdges, &lines);
     Renderer::Init(this);
 }
 
@@ -31,13 +31,25 @@ void Generator::Update()
 
     // Intentionally placing these in reverse order
     // so steps is run on the next update
+    if (currentStep == HALLWAYS)
+    {
+        GenerateHallways();
+        currentStep = DONE;
+    }
+
+    if (currentStep == SPANNING_TREE)
+    {
+        MinimumSpanningTree();
+        currentStep = HALLWAYS;
+    }
+    
     if (currentStep == GRAPHING && numUpdates >= 30)
     {
         numUpdates = 0;
         if (GraphRooms())
         {
             PostGraphRooms();
-            currentStep = HALLWAYS;
+            currentStep = SPANNING_TREE;
         }
     }
 
@@ -76,6 +88,7 @@ bool Generator::SeparateRooms()
     bool bDone = true;
 
     // Fuck it we goin O(n^2) for now
+    // Broadphasing might be faster
     for (int i = 0; i < rooms.Size(); i++)
     {
         for (int j = 0; j < rooms.Size(); j++)
@@ -121,7 +134,7 @@ void Generator::PickRooms()
     {
         if (r->width > 1.25f * widthMean && r->height > 1.25f * heightMean)
         {
-            r->bMainRoom = true;
+            r->eRoomType = Room::MAIN;
             mainRooms.Add(r);
         }
     }
@@ -240,8 +253,66 @@ void Generator::PostGraphRooms()
 
 void Generator::MinimumSpanningTree()
 {
-    Set<Edge> edges;
-    for (std::shared_ptr<Room>& room : mainRooms)
+    for (Edge& e : edges)
     {
+        if (e.key->set.Find() != e.value->set.Find())
+        {
+            selectedEdges.Add(e);
+            e.key->set += e.value->set;
+        }
+        else
+        {
+            // 10% chance to add it anyway for more interesting looking dungeon
+            if (Random::GetRandomValue() < 0.1f)
+            {
+                selectedEdges.Add(e);
+            }
+        }
+    }
+}
+
+void Generator::GenerateHallways()
+{
+    for (const Edge& e : selectedEdges)
+    {
+        if (e.key->CloseEnoughX(*e.value))
+        {
+            float xMid = (e.key->x - e.value->x) / 2;
+            lines.Add(Line(Vec2(xMid, e.key->y), Vec2(xMid, e.value->y)));
+        }
+        else if (e.key->CloseEnoughY(*e.value))
+        {
+            float yMid = (e.key->y - e.value->y) / 2;
+            lines.Add(Line(Vec2(e.key->x, yMid), Vec2(e.value->x, yMid)));
+        }
+        else
+        {
+            Vec2 maxVec(Math::Max(e.key->x, e.value->x), Math::Max(e.key->y, e.value->y));
+            Vec2 minVec(Math::Min(e.key->x, e.value->x), Math::Min(e.key->y, e.value->y));
+            lines.Add(Line(*e.key, maxVec));
+            lines.Add(Line(*e.key, minVec));
+            lines.Add(Line(*e.value, maxVec));
+            lines.Add(Line(*e.value, minVec));
+        }
+    }
+
+    // Going for O(nm) for now
+    // Broadphasing might be possible here
+    for (std::shared_ptr<Room>& r : rooms)
+    {
+        // Skipping main rooms
+        if (r->eRoomType == Room::MAIN)
+            continue;
+
+        for (const Line& l : lines)
+        {
+            if (r->IsColliding(l))
+            {
+                // Add to as a hallway and break (since it's already colliding with one)
+                r->eRoomType = Room::HALLWAY;
+                mainRooms.Add(r);
+                break;
+            }
+        }
     }
 }
