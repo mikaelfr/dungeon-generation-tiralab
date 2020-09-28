@@ -95,6 +95,7 @@ jobs:
        - make
        - make dungeon_generator_coverage
        - ctest
+       - ls
        
       after_success:
        - codecov -X gcov
@@ -167,4 +168,73 @@ jobs:
        # Test for memory leaks
        - make dungeon_generator
        - valgrind --leak-check=full --track-origins=yes ./src/dungeon_generator --headless
-    
+       
+    - stage: Windows
+      name: "Build for Windows"
+      os: windows
+      script:
+        # Install simple2d
+        - wget -O simple2d.zip https://github.com/simple2d/simple2d/releases/download/v1.2.0/simple2d-windows-mingw-1.2.0.zip
+        - 7z x simple2d.zip -osimple2d
+        - cd simple2d
+        - xcopy bin\\* ..\\libs\\simple2d\\
+        - xcopy include\\* ..\\libs\\simple2d\\
+        - xcopy include\\SDL2\\* ..\\libs\\simple2d\\SDL2\\
+        - xcopy lib\\* ..\\libs\\simple2d\\
+        - cd ..
+        # Build
+        - mkdir build
+        - cd build
+        - cmake ${CMAKE_OPTIONS} -G "MinGW Makefiles" -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_TESTS=ON ..
+        - $mingw64 mingw32-make VERBOSE=1
+        # Copy deployed files for zipping
+        - mkdir zipping
+        - xcopy ..\\simple2d\\bin\\*.dll zipping\\
+        - xcopy src\\dungeon_generator.exe zipping\\
+        - xcopy C:\\tools\\msys64\\mingw64\\bin\\libwinpthread-1.dll zipping\\
+        - xcopy tests\\dungeon_generator_test.exe zipping\\
+        - cd zipping
+        - 7z a dungeon_generator.zip *
+        - cd ..
+      
+      before_install:
+        - |-
+            [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
+            choco uninstall -y mingw
+            choco upgrade --no-progress -y msys2
+            export msys2='cmd //C RefreshEnv.cmd '
+            export msys2+='& set MSYS=winsymlinks:nativestrict '
+            export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
+            export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
+            export msys2+=" -msys2 -c "\"\$@"\" --"
+            $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
+            taskkill //IM gpg-agent.exe //F 
+            export PATH=/C/tools/msys64/mingw64/bin:$PATH
+            export MAKE=mingw32-make 
+
+        # Combine global build options with OS/compiler-dependent options
+        - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
+        - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+      
+      before_cache:
+        - |-
+            $msys2 pacman --sync --clean --noconfirm
+
+      cache:
+        directories:
+          - $HOME/AppData/Local/Temp/chocolatey
+          - /C/tools/msys64
+
+
+deploy:
+  provider: releases
+  token:
+    secure: sb1/I6kFC2faFvxdG48TlUM6vrfk7k6Er8umD/zfwFy4DoHyWpiBv9IGdR4MfN9OU5TcaoCd9IupTmkwaU04pHxMurmNSwkFV3SfW+Udf78+JgBakc5WwjvbKHP9MZy0D6gj+JjIyMhNXvDGt6RqrIOLkGpYvJsqxu45gH4cS+LTSqDHa2fNhVL9Mva5J10dm1WCF0gCi3REWl7sssV7aw8qZ5uVmA9Jcc6Qkm+fPoH4XZljEDqpUWdqvN5nqdfJLewW/i8DaVmjj03/1tLky7Q1fg29IXKvq/B7KuWcF1MB8c1pe9Afusk98j5w8TV+5CLk2C5HUQ3v4abMU9cB0F64J6g91qXzIYDzWkrp8zSi+nMkrVxdhf0W81tAvMOMAXAxb4wM8AgskThg7h7dDmVllSl4ezQYLP4SQJGMy+W/K95FH+5K9yZ+8ujsUvkNGuL/FwjBu1UHBAazrGof5+FBP50ibDjsOnlRYwhkCWsFpQ4pfSa8vKdZWS0HuhkkGMNx2t11jBpn+1fY6dtm0W+lUXDUIftd0ZOh33PzFx+a8NgloNHgqOTM83PuyQ+FDuapx+9hTIn7NznY4/5OFjioGbN0zlAyYQ1q+l2TM0Mzah5XqLU1ZOsys9SYJBZDqNMxQpnH5RAFBa2/fEP5KymfE3HoBNnnoGnVIjNGHD8=
+  file:
+    - src/dungeon_generator
+    - tests/dungeon_generator_test
+    - zipping/dungeon_generator.zip
+  on:
+    repo: mikaelfr/dungeon-generation-tiralab
+    tags: true
+  skip_cleanup: true
