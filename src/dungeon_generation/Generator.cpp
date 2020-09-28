@@ -42,7 +42,7 @@ void Generator::Update()
         MinimumSpanningTree();
         currentStep = HALLWAYS;
     }
-    
+
     if (currentStep == GRAPHING && numUpdates >= 30)
     {
         numUpdates = 0;
