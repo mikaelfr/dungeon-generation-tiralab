@@ -287,12 +287,12 @@ void Generator::GenerateHallways()
         }
         else
         {
-            Vec2 maxVec(Math::Max(e.key->x, e.value->x), Math::Max(e.key->y, e.value->y));
-            Vec2 minVec(Math::Min(e.key->x, e.value->x), Math::Min(e.key->y, e.value->y));
-            lines.Add(Line(*e.key, maxVec));
-            lines.Add(Line(*e.key, minVec));
-            lines.Add(Line(*e.value, maxVec));
-            lines.Add(Line(*e.value, minVec));
+            Vec2 corner1(e.key->x, e.value->y);
+            Vec2 corner2(e.value->x, e.key->y);
+            lines.Add(Line(*e.key, corner1));
+            lines.Add(Line(*e.key, corner2));
+            lines.Add(Line(*e.value, corner1));
+            lines.Add(Line(*e.value, corner2));
         }
     }
 
