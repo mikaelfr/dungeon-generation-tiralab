@@ -34,6 +34,7 @@ void Generator::Update()
     if (currentStep == HALLWAYS)
     {
         GenerateHallways();
+        PrintOutput();
         currentStep = DONE;
     }
 
@@ -315,4 +316,9 @@ void Generator::GenerateHallways()
             }
         }
     }
+}
+
+void Generator::PrintOutput()
+{
+    std::cout << '{' << "\"rooms\": " << mainRooms << ", \"lines\": " << lines << '}';
 }

@@ -25,7 +25,7 @@ public:
     // Removes max one element per call
     // Requires operator == to exist for T
     void Remove(T v);
-    int Size();
+    int Size() const;
 
     typedef int (*ComparisonFunction)(const T&, const T&);
 
@@ -44,6 +44,15 @@ public:
 
     T Last() const { return data[numElements - 1]; }
     T& Last() { return data[numElements - 1]; }
+
+    // Using the stream operator requires T to also have the stream operator defined
+    template <typename T1>
+    friend std::ostream& operator<<(std::ostream& os, const Array<T1>& arr);
+
+    // Using the stream operator requires T to also have the stream operator defined
+    // Thanks, I hate it
+    template <typename T2>
+    friend std::ostream& operator<<(std::ostream& os, const Array<std::shared_ptr<T2>>& arr);
 
     // Locks the array, permitting no operations that could modify memory
     void Lock();
@@ -181,7 +190,7 @@ inline void Array<T>::Remove(T v)
 }
 
 template <typename T>
-int Array<T>::Size()
+int Array<T>::Size() const
 {
     return numElements;
 }
@@ -199,6 +208,38 @@ void Array<T>::Sort(ComparisonFunction func)
         delete[] data;
 
     data = sortedArray;
+}
+
+template <typename T1>
+std::ostream& operator<<(std::ostream& os, const Array<T1>& arr)
+{
+    os << '[';
+
+    for (int i = 0; i < arr.Size(); i++)
+    {
+        os << arr[i];
+        if (i != arr.Size() - 1)
+            os << ", ";
+    }
+
+    os << ']';
+    return os;
+}
+
+template <typename T2>
+std::ostream& operator<<(std::ostream& os, const Array<std::shared_ptr<T2>>& arr)
+{
+    os << '[';
+
+    for (int i = 0; i < arr.Size(); i++)
+    {
+        os << *arr[i];
+        if (i != arr.Size() - 1)
+            os << ", ";
+    }
+
+    os << ']';
+    return os;
 }
 
 template <typename T>

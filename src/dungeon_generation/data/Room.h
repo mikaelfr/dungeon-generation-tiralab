@@ -37,6 +37,8 @@ struct Room
         return GetPos();
     }
 
+    friend std::ostream& operator<<(std::ostream& os, const Room& room);
+
     float width;
     float height;
     float x;

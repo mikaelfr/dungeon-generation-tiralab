@@ -105,3 +105,10 @@ bool Room::operator==(const Room& other) const
 {
     return x == other.x && y == other.y && width == other.width && height == other.height;
 }
+
+std::ostream& operator<<(std::ostream& os, const Room& room)
+{
+    os << '{' << "\"x\": " << room.x << ", \"y\": " << room.y << ", \"width\": " << room.width
+       << ", \"height\": " << room.height << ", \"type\": " << (int)room.eRoomType << '}';
+    return os;
+}

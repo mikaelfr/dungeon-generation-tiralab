@@ -54,4 +54,5 @@ private:
     void PostGraphRooms();
     void MinimumSpanningTree();
     void GenerateHallways();
+    void PrintOutput();
 };

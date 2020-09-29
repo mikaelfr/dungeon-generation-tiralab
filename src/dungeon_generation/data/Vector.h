@@ -2,6 +2,7 @@
 
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <iostream>
 
 struct Vec2
 {
@@ -90,6 +91,12 @@ struct Vec2
     {
         lhs *= value;
         return lhs;
+    }
+
+    inline friend std::ostream& operator<<(std::ostream& os, const Vec2& vec)
+    {
+        os << '{' << "\"x\": " << vec.x << ", \"y\": " << vec.y << '}';
+        return os;
     }
 
     float x;
