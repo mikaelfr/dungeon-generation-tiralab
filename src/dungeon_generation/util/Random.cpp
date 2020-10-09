@@ -5,6 +5,11 @@
 unsigned int Random::index = n + 1;
 unsigned int Random::mt[n];
 
+/*
+Sets the seed for the Mersenne Twister algorithm
+
+@param seed Seed to use in the algorithm
+*/
 void Random::SetSeed(unsigned int seed)
 {
     index = n;
@@ -15,11 +20,22 @@ void Random::SetSeed(unsigned int seed)
     }
 }
 
+/*
+Returns a normalized pseudorandom float between 0.0 and 1.0
+
+@return Pseudorandom float between 0.0 and 1.0
+*/
 float Random::GetRandomValue()
 {
     return (float)GetRandomNumber() / d;
 }
 
+/*
+Returns a new pseudorandom number between 0 and d
+using the Mersenne Twister algorithm
+
+@return Pseudorandom unsigned int between 0 and d
+*/
 unsigned int Random::GetRandomNumber()
 {
     if (index >= n)
@@ -42,6 +58,9 @@ unsigned int Random::GetRandomNumber()
     return y;
 }
 
+/*
+Generates a new set of n pseudorandom numbers
+*/
 void Random::Twist()
 {
     for (unsigned int i = 0; i < n; i++)

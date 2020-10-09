@@ -4,16 +4,33 @@
 #include "data/Tuple.h"
 #include "ui/Renderer.h"
 
+/*
+Constructor for the generator
+
+Initializes the rooms array to hold the amount of rooms to be generated
+so the array doesn't have to be resized multiple times over generation
+*/
 Generator::Generator()
     : rooms(numRoomCandidates)
 {
 }
 
+/*
+Destructor for the generator
+
+Sets the references to the generator in Renderer to null
+*/
 Generator::~Generator()
 {
     Renderer::SetGenerator(NULL);
+    Renderer::SetRoomArray(NULL, NULL, NULL, NULL);
 }
 
+/*
+Deterministically generates a dungeon from a given seed
+
+@param seed Seed for dungeon generation
+*/
 void Generator::Generate(int seed)
 {
     Random::SetSeed(seed);
@@ -25,6 +42,11 @@ void Generator::Generate(int seed)
     Renderer::Init(this);
 }
 
+/*
+Update function to be called by the renderer
+
+Assumes 60 fps
+*/
 void Generator::Update()
 {
     numUpdates++;
@@ -70,6 +92,12 @@ void Generator::Update()
     }
 }
 
+/*
+Generates different size rooms in a circle.
+
+Picks a random point in a circle with radius of circleRadius (const int defined in Generator.h)
+and spawns a random sized room in that spot
+*/
 void Generator::GenerateRooms()
 {
     // Generate <numRoomCandidates> candidates for rooms
@@ -84,6 +112,12 @@ void Generator::GenerateRooms()
     }
 }
 
+/*
+Uses a simple AABB collision detection algorithm with dumb O(n^2) resolving
+to separate rooms so that none are overlapping
+
+@return True if no rooms are colliding anymore
+*/
 bool Generator::SeparateRooms()
 {
     bool bDone = true;
@@ -122,6 +156,11 @@ bool Generator::SeparateRooms()
     return bDone;
 }
 
+/*
+Picks main rooms from all rooms by selecting rooms with width and height larger than 1.25 * median width and height
+
+Uses O(n log n) merge sort from Array class to order rooms by width and height
+*/
 void Generator::PickRooms()
 {
     rooms.Sort([](const std::shared_ptr<Room>& a, const std::shared_ptr<Room>& b) { return (int)(b->width - a->width); });
@@ -141,6 +180,9 @@ void Generator::PickRooms()
     }
 }
 
+/*
+Sets up a triangle large enough to encompass all rooms for Bowyer-Watson algorithm
+*/
 void Generator::PreGraphRooms()
 {
     float minX = mainRooms[0]->x;
@@ -170,7 +212,18 @@ void Generator::PreGraphRooms()
     triangles.Add(std::make_shared<Triangle>(r1, r2, r3));
 }
 
-// Using Bowyer-Watson algorithm avg. O(n log n), max. O(n^2)
+/*
+Creates a "beautiful" triangulation of all rooms
+
+Beautiful defined as all triangles meeting the Delaunay condition
+
+Delaunay condition states that for every triangle, the circle drawn over all three of the vertices
+of the triangle should not have any vertex in it other than the three defining the circle
+
+Uses Bowyer-Watson algorithm avg. O(n log n), max. O(n^2)
+
+@return True if graphing finished
+*/
 bool Generator::GraphRooms()
 {
     std::shared_ptr<Room> room = mainRooms[stepNumber++];
@@ -226,6 +279,12 @@ bool Generator::GraphRooms()
     return false;
 }
 
+/*
+Removes all triangles that contains a vertex from the super triangle 
+In addition, creates a set of unique edges from triangles
+
+Super triangle refers to the one created in PreGraphRooms that encompasses all rooms
+*/
 void Generator::PostGraphRooms()
 {
     Array<std::shared_ptr<Triangle>> badTriangles;
@@ -252,6 +311,13 @@ void Generator::PostGraphRooms()
     }
 }
 
+/*
+Creates the (almost) minimum spanning tree from the triangulation
+Includes 10% extra edges for more interesting looking dungeon
+
+Uses Prim's algorithm
+TODO: Add actual sorting by distance with binary or fibonacci heap
+*/
 void Generator::MinimumSpanningTree()
 {
     for (Edge& e : edges)
@@ -272,6 +338,11 @@ void Generator::MinimumSpanningTree()
     }
 }
 
+/*
+Generates hallways along the axes between connected main rooms
+
+Picks extra rooms that are close enough to hallways
+*/
 void Generator::GenerateHallways()
 {
     for (const Edge& e : selectedEdges)
@@ -318,6 +389,9 @@ void Generator::GenerateHallways()
     }
 }
 
+/*
+Prints the dungeon in a json format
+*/
 void Generator::PrintOutput()
 {
     std::cout << '{' << "\"rooms\": " << mainRooms << ", \"lines\": " << lines << '}';
