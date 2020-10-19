@@ -30,16 +30,36 @@ Generator::~Generator()
 Deterministically generates a dungeon from a given seed
 
 @param seed Seed for dungeon generation
+@param bHeadless If true, UI is not initialized
 */
-void Generator::Generate(int seed)
+void Generator::Generate(int seed, bool bHeadless)
 {
     Random::SetSeed(seed);
-    currentStep = GENERATE;
-    GenerateRooms();
 
-    currentStep = SEPARATE;
-    Renderer::SetRoomArray(&rooms, &triangles, &selectedEdges, &lines);
-    Renderer::Init(this);
+    if (!bHeadless)
+    {
+        currentStep = GENERATE;
+        GenerateRooms();
+        currentStep = SEPARATE;
+        Renderer::SetRoomArray(&rooms, &triangles, &selectedEdges, &lines);
+        Renderer::Init(this);
+    }
+    else
+    {
+        GenerateRooms();
+        bool bDone = false;
+        while (!bDone)
+            bDone = SeparateRooms();
+        PickRooms();
+        PreGraphRooms();
+        bDone = false;
+        while (!bDone)
+            bDone = GraphRooms();
+        PostGraphRooms();
+        MinimumSpanningTree();
+        GenerateHallways();
+        PrintOutput();
+    }
 }
 
 /*

@@ -9,19 +9,43 @@
 // Forward def for Verts and Edges
 class Triangle;
 
+/*
+Struct for edges
+
+Only practical difference between this struct and a typedef is that
+this struct has a equals operator overload for checking if the edges are the same
+while ignoring the direction
+*/
 struct Edge : public Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>
 {
+    /*
+    Default constructor
+    Calls tuple default constructor
+    */
     Edge()
         : Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>()
     {
     }
 
+    /*
+    Constructor that creates an edge from pointers to rooms a and b
+    Calls tuple constructor with a and b
+
+    @param a Pointer to room a
+    @param b Pointer to room b
+    */
     Edge(std::shared_ptr<Room> a, std::shared_ptr<Room> b)
         : Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>(a, b)
     {
     }
 
-    // Undirected
+    /*
+    Overloaded equality operator
+    Ignores direction
+
+    @param other Edge to compare this to
+    @return True if both edges have same points
+    */
     inline bool operator==(const Edge& other) const
     {
         return (this->key == other.key && this->value == other.value) ||
@@ -29,6 +53,9 @@ struct Edge : public Tuple<std::shared_ptr<Room>, std::shared_ptr<Room>>
     }
 };
 
+/*
+Empty support class for iterating over the vertices of a triangle automagically
+*/
 struct Verts
 {
     Verts(Triangle* pTriangle);
@@ -44,6 +71,9 @@ struct Verts
     Triangle* pTriangle = NULL;
 };
 
+/*
+Empty support class for iterating over the edges of a triangles automagically
+*/
 struct Edges
 {
     Edges(Triangle* pTriangle);
@@ -59,6 +89,9 @@ struct Edges
     Triangle* pTriangle = NULL;
 };
 
+/*
+Class for triangle data type, contains many helper functions
+*/
 class Triangle
 {
 public:
@@ -69,8 +102,6 @@ public:
     bool IsDelaunay(Vec2 point);
 
     bool HasVertFromSuperTriangle();
-
-    Edge GetClosestVerts(const Vec2& point);
 
     bool HasEdge(const Edge& edge);
 

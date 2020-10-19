@@ -2,6 +2,9 @@
 
 #include "../data/Vector.h"
 
+/*
+Static class containing math utility functions
+*/
 class Math
 {
 public:

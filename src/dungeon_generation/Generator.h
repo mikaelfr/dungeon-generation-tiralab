@@ -5,6 +5,9 @@
 #include "data/Triangle.h"
 #include "data/Set.h"
 
+/*
+Class directing the main flow of the generation
+*/
 class Generator
 {
 public:
@@ -25,7 +28,7 @@ public:
     Generator();
     ~Generator();
 
-    void Generate(int seed);
+    void Generate(int seed, bool bHeadless);
     void Update();
 
 private:

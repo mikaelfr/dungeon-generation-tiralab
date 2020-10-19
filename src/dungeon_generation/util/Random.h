@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+Custom implementation of a Mersenne Twister according to
+the pseudocode on Wikipedia
+https://en.wikipedia.org/wiki/Mersenne_Twister
+*/
 class Random
 {
 public:
