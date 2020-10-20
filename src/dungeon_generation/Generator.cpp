@@ -334,7 +334,7 @@ void Generator::PostGraphRooms()
         {
             // Set guarantees we will not have duplicate edges
             edges.Add(Edge(t->a, t->b), Edge(t->b, t->c), Edge(t->c, t->a));
-            
+
             t->a->neighbors.Add(t->b, t->c);
             t->b->neighbors.Add(t->a, t->c);
             t->c->neighbors.Add(t->a, t->b);
