@@ -21,6 +21,10 @@ public:
     static void SetRoomArray(Array<std::shared_ptr<Room>>* pRooms, Array<std::shared_ptr<Triangle>>* pTriangles, Array<Edge>* pSelectedEdges, Array<Tuple<Vec2, Vec2>>* pLines);
     static void SetGenerator(class Generator* pGenerator);
 
+    static bool ShouldRunStep();
+    static void StepRan();
+    static void SetFinished(bool bFinished);
+
 private:
     static int windowWidth;
     static int windowHeight;
@@ -32,6 +36,8 @@ private:
     static Array<Edge>* pSelectedEdges;
     static Array<Tuple<Vec2, Vec2>>* pLines;
     static class Generator* pGenerator;
+    static bool bRunStep;
+    static bool bFinished;
 
     static S2D_Color bgColor;
     static S2D_Color fgColor;
@@ -39,6 +45,7 @@ private:
     static S2D_Color hgHallColor;
 
     static void Render();
+    static void OnKey(S2D_Event e);
 
     // We out here going all static class and shit
     Renderer() {}

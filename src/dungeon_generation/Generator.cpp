@@ -40,7 +40,6 @@ void Generator::Generate(int seed, bool bHeadless)
     {
         currentStep = GENERATE;
         GenerateRooms();
-        currentStep = SEPARATE;
         Renderer::SetRoomArray(&rooms, &triangles, &selectedEdges, &lines);
         Renderer::Init(this);
     }
@@ -69,15 +68,25 @@ Assumes 60 fps
 */
 void Generator::Update()
 {
+    if (!Renderer::ShouldRunStep() && currentStep != SEPARATE)
+        return;
+
+    Renderer::StepRan();
     numUpdates++;
 
     // Intentionally placing these in reverse order
-    // so steps is run on the next update
+    // so steps are run on the next update
+    if (currentStep == PRINTING)
+    {
+        PrintOutput();
+        Renderer::SetFinished(true);
+        currentStep = DONE;
+    }
+
     if (currentStep == HALLWAYS)
     {
         GenerateHallways();
-        PrintOutput();
-        currentStep = DONE;
+        currentStep = PRINTING;
     }
 
     if (currentStep == SPANNING_TREE)
@@ -86,9 +95,8 @@ void Generator::Update()
         currentStep = HALLWAYS;
     }
 
-    if (currentStep == GRAPHING && numUpdates >= 30)
+    if (currentStep == GRAPHING)
     {
-        numUpdates = 0;
         if (GraphRooms())
         {
             PostGraphRooms();
@@ -109,6 +117,12 @@ void Generator::Update()
         numUpdates = 0;
         if (SeparateRooms())
             currentStep = PICKING;
+    }
+
+    // Just having this here so we can stop before the separation step
+    if (currentStep == GENERATE)
+    {
+        currentStep = SEPARATE;
     }
 }
 
@@ -319,9 +333,11 @@ void Generator::PostGraphRooms()
         else
         {
             // Set guarantees we will not have duplicate edges
-            edges.Add(Edge(t->a, t->b));
-            edges.Add(Edge(t->b, t->c));
-            edges.Add(Edge(t->c, t->a));
+            edges.Add(Edge(t->a, t->b), Edge(t->b, t->c), Edge(t->c, t->a));
+            
+            t->a->neighbors.Add(t->b, t->c);
+            t->b->neighbors.Add(t->a, t->c);
+            t->c->neighbors.Add(t->a, t->b);
         }
     }
 
@@ -335,11 +351,11 @@ void Generator::PostGraphRooms()
 Creates the (almost) minimum spanning tree from the triangulation
 Includes 10% extra edges for more interesting looking dungeon
 
-Uses Prim's algorithm
-TODO: Add actual sorting by distance with binary or fibonacci heap
+Uses Kruskal's algorithm
 */
 void Generator::MinimumSpanningTree()
 {
+    edges.Sort([](const Edge& a, const Edge& b) { return (int)(a.key->GetVectorBetween(*a.value).Length() < b.key->GetVectorBetween(*b.value).Length()); });
     for (Edge& e : edges)
     {
         if (e.key->set.Find() != e.value->set.Find())

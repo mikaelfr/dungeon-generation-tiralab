@@ -2,6 +2,7 @@
 
 #include "../util/Math.h"
 #include "Array.h"
+#include "Set.h"
 #include "DisjointSet.h"
 #include "Tuple.h"
 
@@ -26,11 +27,13 @@ struct Room
     float DistanceToOrigin() const;
     bool CloseEnoughX(const Room& other);
     bool CloseEnoughY(const Room& other);
+    float ShortestDistanceToMST() const;
     inline Vec2 GetPos() const
     {
         return Vec2(x, y);
     }
 
+    bool operator<(const Room& other) const;
     bool operator==(const Room& other) const;
     inline operator Vec2() const
     {
@@ -44,5 +47,7 @@ struct Room
     float x;
     float y;
     RoomType eRoomType;
+    bool bPartOfMST;
+    Set<std::shared_ptr<Room>> neighbors;
     DisjointSet<Room*> set;
 };

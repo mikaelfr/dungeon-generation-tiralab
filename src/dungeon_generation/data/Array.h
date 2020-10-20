@@ -259,8 +259,7 @@ void Array<T>::Resize(int newSize)
 {
     if (numElements >= newSize)
     {
-        std::cerr << "There are currently more elements than there is room in the new array." << std::endl;
-        return;
+        throw "There are currently more elements than there is room in the new array.";
     }
 
     T* newArray = new T[newSize];

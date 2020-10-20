@@ -20,6 +20,7 @@ public:
         GRAPHING,
         SPANNING_TREE,
         HALLWAYS,
+        PRINTING,
         DONE
     };
 

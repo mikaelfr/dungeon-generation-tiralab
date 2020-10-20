@@ -1,6 +1,9 @@
 #include "Renderer.h"
 #include "Renderer.h"
 #include "Renderer.h"
+#include "Renderer.h"
+#include "Renderer.h"
+#include "Renderer.h"
 
 #include "../util/Random.h"
 #include "../Generator.h"
@@ -15,6 +18,8 @@ Array<std::shared_ptr<Triangle>>* Renderer::pTriangles = NULL;
 Array<Edge>* Renderer::pSelectedEdges = NULL;
 Array<Tuple<Vec2, Vec2>>* Renderer::pLines = NULL;
 Generator* Renderer::pGenerator = NULL;
+bool Renderer::bRunStep = false;
+bool Renderer::bFinished = false;
 
 S2D_Color Renderer::bgColor = { 0.925f, 0.957f, 0.957f, 1.0f };
 S2D_Color Renderer::fgColor = { 0.0f, 0.415f, 0.443f, 1.0f };
@@ -29,6 +34,7 @@ void Renderer::Init(Generator* pGenerator)
     Renderer::pGenerator = pGenerator;
     pWindow = S2D_CreateWindow("Dungeon Generation", windowWidth, windowHeight, &Renderer::Update, &Renderer::Render, 0);
     pWindow->viewport.mode = S2D_STRETCH;
+    pWindow->on_key = &Renderer::OnKey;
     // Turn on 8xMSAA
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
@@ -71,6 +77,21 @@ void Renderer::SetGenerator(Generator* pGenerator)
     Renderer::pGenerator = pGenerator;
 }
 
+bool Renderer::ShouldRunStep()
+{
+    return Renderer::bRunStep;
+}
+
+void Renderer::StepRan()
+{
+    bRunStep = false;
+}
+
+void Renderer::SetFinished(bool bFinished)
+{
+    Renderer::bFinished = bFinished;
+}
+
 void Renderer::Render()
 {
     float halfWidth = (float)windowWidth / 2;
@@ -94,6 +115,10 @@ void Renderer::Render()
             {
                 color = hgHallColor;
                 lineColor = { 0.95f, 0.95f, 0.95f, 1.0f };
+            }
+            else if (bFinished && room->eRoomType == Room::NORMAL)
+            {
+                continue;
             }
 
             S2D_DrawQuad(
@@ -144,14 +169,30 @@ void Renderer::Render()
     }
 
     // Need to do this after because render order
-    if (pTriangles && pSelectedEdges && pSelectedEdges->Size() == 0)
+    if (!bFinished)
     {
-        const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
-
-        for (const std::shared_ptr<Triangle>& triangle : *pTriangles)
+        if (pTriangles && pSelectedEdges && pSelectedEdges->Size() == 0)
         {
-            // This draws lines multiple times but ehh
-            for (Edge edge : triangle->GetEdges())
+            const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
+
+            for (const std::shared_ptr<Triangle>& triangle : *pTriangles)
+            {
+                // This draws lines multiple times but ehh
+                for (Edge edge : triangle->GetEdges())
+                {
+                    S2D_DrawLine(
+                        edge.key->x + halfWidth, edge.key->y + halfHeight, edge.value->x + halfWidth, edge.value->y + halfHeight, 2,
+                        green.r, green.g, green.b, green.a,
+                        green.r, green.g, green.b, green.a,
+                        green.r, green.g, green.b, green.a,
+                        green.r, green.g, green.b, green.a);
+                }
+            }
+        }
+        else
+        {
+            const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
+            for (const Edge& edge : *pSelectedEdges)
             {
                 S2D_DrawLine(
                     edge.key->x + halfWidth, edge.key->y + halfHeight, edge.value->x + halfWidth, edge.value->y + halfHeight, 2,
@@ -162,17 +203,15 @@ void Renderer::Render()
             }
         }
     }
-    else
+}
+
+void Renderer::OnKey(S2D_Event e)
+{
+    switch (e.type)
     {
-        const S2D_Color green = { 0.0f, 1.0f, 0.0f, 1.0f };
-        for (const Edge& edge : *pSelectedEdges)
-        {
-            S2D_DrawLine(
-                edge.key->x + halfWidth, edge.key->y + halfHeight, edge.value->x + halfWidth, edge.value->y + halfHeight, 2,
-                green.r, green.g, green.b, green.a,
-                green.r, green.g, green.b, green.a,
-                green.r, green.g, green.b, green.a,
-                green.r, green.g, green.b, green.a);
-        }
+        case S2D_KEY_DOWN:
+            if (strcmp(e.key, "Right") == 0)
+                bRunStep = true;
+            break;
     }
 }

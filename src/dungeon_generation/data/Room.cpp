@@ -6,8 +6,9 @@ Room::Room()
     height = 0;
     x = 0;
     y = 0;
-    this->eRoomType = UNKNOWN;
-    this->set = DisjointSet<Room*>(this);
+    eRoomType = UNKNOWN;
+    bPartOfMST = false;
+    set = DisjointSet<Room*>(this);
 }
 
 Room::Room(float width, float height, float x, float y)
@@ -17,6 +18,7 @@ Room::Room(float width, float height, float x, float y)
     this->x = x;
     this->y = y;
     this->eRoomType = NORMAL;
+    this->bPartOfMST = false;
     this->set = DisjointSet<Room*>(this);
 }
 
@@ -99,6 +101,24 @@ bool Room::CloseEnoughY(const Room& other)
     {
         return (other.y - height) - (y - height) < threshold;
     }
+}
+
+float Room::ShortestDistanceToMST() const
+{
+    float shortestDistance = 1000000.0f;
+    for (const std::shared_ptr<Room>& room : neighbors)
+    {
+        if (room->bPartOfMST)
+        {
+            shortestDistance = Math::Min(shortestDistance, GetVectorBetween(*room).Length());
+        }
+    }
+    return shortestDistance;
+}
+
+bool Room::operator<(const Room& other) const
+{
+    return ShortestDistanceToMST() < other.ShortestDistanceToMST();
 }
 
 bool Room::operator==(const Room& other) const
