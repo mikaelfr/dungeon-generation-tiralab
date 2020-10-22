@@ -131,7 +131,6 @@ void Renderer::Render()
                         l.value.x + halfWidth + threshold, l.value.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
                         l.key.x + halfWidth - threshold, l.key.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a);
                 }
-                
             }
             else
             {
