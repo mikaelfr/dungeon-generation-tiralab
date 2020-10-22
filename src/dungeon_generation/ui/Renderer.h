@@ -43,6 +43,7 @@ private:
     static S2D_Color fgColor;
     static S2D_Color hgColor;
     static S2D_Color hgHallColor;
+    static S2D_Color fgHallColor;
 
     static void Render();
     static void OnKey(S2D_Event e);

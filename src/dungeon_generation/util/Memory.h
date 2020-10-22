@@ -17,8 +17,20 @@ public:
 #endif
     }
 
+    template <typename It, typename Dest>
+    static void Copy(It begin, It end, Dest dest);
+
 private:
     // No instances
     Memory() {}
     ~Memory() {}
 };
+
+template <typename It, typename Dest>
+inline void Memory::Copy(It begin, It end, Dest dest)
+{
+    for (It i = begin; i != end; i++)
+    {
+        dest[i - begin] = *i;
+    }
+}

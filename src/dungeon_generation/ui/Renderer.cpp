@@ -25,6 +25,7 @@ S2D_Color Renderer::bgColor = { 0.925f, 0.957f, 0.957f, 1.0f };
 S2D_Color Renderer::fgColor = { 0.0f, 0.415f, 0.443f, 1.0f };
 S2D_Color Renderer::hgColor = { 1.0f, 0.494f, 0.404f, 1.0f };
 S2D_Color Renderer::hgHallColor = { 0.8f, 0.1f, 0.404f, 1.0f };
+S2D_Color Renderer::fgHallColor = { 0.3f, 0.3f, 0.3f, 1.0f };
 
 void Renderer::Init(Generator* pGenerator)
 {
@@ -97,6 +98,63 @@ void Renderer::Render()
     float halfWidth = (float)windowWidth / 2;
     float halfHeight = (float)windowHeight / 2;
 
+    if (pLines)
+    {
+        const S2D_Color red = { 1.0f, 0.0f, 0.0f, 1.0f };
+        for (const Tuple<Vec2, Vec2>& l : *pLines)
+        {
+            /*
+            S2D_DrawLine(
+                l.key.x + halfWidth, l.key.y + halfHeight, l.value.x + halfWidth, l.value.y + halfHeight, 2,
+                red.r, red.g, red.b, red.a,
+                red.r, red.g, red.b, red.a,
+                red.r, red.g, red.b, red.a,
+                red.r, red.g, red.b, red.a);
+                */
+            const float threshold = 5.0f;
+            // if horizontal
+            if (Math::Abs(l.key.y - l.value.y) <= 0.01f)
+            {
+                if (l.key.x > l.value.x)
+                {
+                    S2D_DrawQuad(
+                        l.key.x + halfWidth + threshold, l.key.y + halfHeight + threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.value.x + halfWidth - threshold, l.value.y + halfHeight + threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.value.x + halfWidth - threshold, l.value.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.key.x + halfWidth + threshold, l.key.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a);
+                }
+                else
+                {
+                    S2D_DrawQuad(
+                        l.key.x + halfWidth - threshold, l.key.y + halfHeight + threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.value.x + halfWidth + threshold, l.value.y + halfHeight + threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.value.x + halfWidth + threshold, l.value.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.key.x + halfWidth - threshold, l.key.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a);
+                }
+                
+            }
+            else
+            {
+                if (l.key.y > l.value.y)
+                {
+                    S2D_DrawQuad(
+                        l.key.x + halfWidth + threshold, l.key.y + halfHeight + threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.value.x + halfWidth + threshold, l.value.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.value.x + halfWidth - threshold, l.value.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.key.x + halfWidth - threshold, l.key.y + halfHeight + threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a);
+                }
+                else
+                {
+                    S2D_DrawQuad(
+                        l.key.x + halfWidth + threshold, l.key.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.value.x + halfWidth + threshold, l.value.y + halfHeight + threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.value.x + halfWidth - threshold, l.value.y + halfHeight + threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a,
+                        l.key.x + halfWidth - threshold, l.key.y + halfHeight - threshold, fgHallColor.r, fgHallColor.g, fgHallColor.b, fgHallColor.a);
+                }
+            }
+        }
+    }
+
     if (pRooms)
     {
         for (const std::shared_ptr<Room>& room : *pRooms)
@@ -151,20 +209,6 @@ void Renderer::Render()
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a,
                 lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-        }
-    }
-
-    if (pLines)
-    {
-        const S2D_Color red = { 1.0f, 0.0f, 0.0f, 1.0f };
-        for (const Tuple<Vec2, Vec2>& l : *pLines)
-        {
-            S2D_DrawLine(
-                l.key.x + halfWidth, l.key.y + halfHeight, l.value.x + halfWidth, l.value.y + halfHeight, 2,
-                red.r, red.g, red.b, red.a,
-                red.r, red.g, red.b, red.a,
-                red.r, red.g, red.b, red.a,
-                red.r, red.g, red.b, red.a);
         }
     }
 
