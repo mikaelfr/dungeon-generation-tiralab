@@ -27,14 +27,25 @@ struct Room
     float DistanceToOrigin() const;
     bool CloseEnoughX(const Room& other);
     bool CloseEnoughY(const Room& other);
-    float ShortestDistanceToMST() const;
+
+    /*
+    Returns the position of this room as a two-dimensional vector
+
+    @return Position of this room as a Vec2
+    */
     inline Vec2 GetPos() const
     {
         return Vec2(x, y);
     }
 
-    bool operator<(const Room& other) const;
     bool operator==(const Room& other) const;
+
+    /*
+    Implicit conversion of Room to Vec2.
+    This is defined to be the position of the room.
+
+    @return Position of this room as a Vec2
+    */
     inline operator Vec2() const
     {
         return GetPos();
