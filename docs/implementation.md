@@ -30,6 +30,13 @@ Time: `O(e log v)`
 
 Space: `O(e + v)`
 
+### Simple AABB collision detection
+`n` refers to the number of rooms generated
+
+Time: `O(n^2)`
+
+Space: `O(n)`
+
 ## Problems
 - The program uses `std::copy` from the standard library to replace `memcpy` for objects with copy constructors. This could be trivially replaced with a for-loop, but would be slightly slower for simple types.
 

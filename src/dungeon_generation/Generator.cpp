@@ -156,8 +156,6 @@ bool Generator::SeparateRooms()
 {
     bool bDone = true;
 
-    // Fuck it we goin O(n^2) for now
-    // Broadphasing might be faster
     for (int i = 0; i < rooms.Size(); i++)
     {
         for (int j = 0; j < rooms.Size(); j++)
@@ -404,8 +402,6 @@ void Generator::GenerateHallways()
         }
     }
 
-    // Going for O(nm) for now
-    // Broadphasing might be possible here
     for (std::shared_ptr<Room>& r : rooms)
     {
         // Skipping main rooms
