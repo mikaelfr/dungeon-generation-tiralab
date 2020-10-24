@@ -4,7 +4,7 @@
 #include "dungeon_generation.h"
 #include "dungeon_generation/Generator.h"
 #include "dungeon_generation/ui/Renderer.h"
-#include <cstring>
+#include <string>
 
 int main(int argc, char** argv)
 {
