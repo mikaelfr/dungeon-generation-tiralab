@@ -1,6 +1,7 @@
 #include "dungeon_generation/data/Vector.h"
 
 #include "doctest.h"
+#include <sstream>
 
 TEST_SUITE("Test Vector")
 {
@@ -64,5 +65,16 @@ TEST_SUITE("Test Vector")
         CHECK(Vec2(2, 3) * 1 == Vec2(2, 3));
         CHECK(Vec2(5, 6) * 2.0f == Vec2(10, 12));
         CHECK(Vec2(-5, -6) * -2 == Vec2(10, 12));
+        CHECK(Vec2(4, 2) * 1.5f == Vec2(6, 3));
+    }
+
+    TEST_CASE("Test stream operator")
+    {
+        std::stringstream ss;
+        ss << Vec2(-4, 3);
+        CHECK(ss.str() == "{\"x\": -4, \"y\": 3}");
+        ss.str("");
+        ss << Vec2(0, -3.5f);
+        CHECK(ss.str() == "{\"x\": 0, \"y\": -3.5}");
     }
 }

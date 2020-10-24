@@ -4,17 +4,25 @@
 
 TEST_SUITE("Test Triangle")
 {
+    TEST_CASE("Test Edge")
+    {
+        SUBCASE("Test Equality")
+        {
+
+        }
+    }
+
     TEST_CASE("Test IsDelaunay")
     {
-        std::shared_ptr<Room> a1 = std::make_shared<Room>(1, 1, -3, 3);
-        std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
-        std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
+        std::shared_ptr<Room> a1 = std::make_shared<Room>(1.0f, 1.0f, -3.0f, 3.0f);
+        std::shared_ptr<Room> b1 = std::make_shared<Room>(1.0f, 1.0f, -4.0f, -1.0f);
+        std::shared_ptr<Room> c1 = std::make_shared<Room>(1.0f, 1.0f, -2.0f, -3.0f);
 
         Triangle t1(a1, b1, c1);
 
-        std::shared_ptr<Room> a2 = std::make_shared<Room>(1, 1, -2, 3);
-        std::shared_ptr<Room> b2 = std::make_shared<Room>(1, 1, 0, 1);
-        std::shared_ptr<Room> c2 = std::make_shared<Room>(1, 1, 0, -2);
+        std::shared_ptr<Room> a2 = std::make_shared<Room>(1.0f, 1.0f, -2.0f, 3.0f);
+        std::shared_ptr<Room> b2 = std::make_shared<Room>(1.0f, 1.0f, 0.0f, 1.0f);
+        std::shared_ptr<Room> c2 = std::make_shared<Room>(1.0f, 1.0f, 0.0f, -2.0f);
 
         Triangle t2(a2, b2, c2);
 
@@ -26,15 +34,15 @@ TEST_SUITE("Test Triangle")
 
     TEST_CASE("Test HasVertFromSuperTriangle")
     {
-        std::shared_ptr<Room> a1 = std::make_shared<Room>(1, 1, -3, 3);
-        std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
-        std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
+        std::shared_ptr<Room> a1 = std::make_shared<Room>(1.0f, 1.0f, -3.0f, 3.0f);
+        std::shared_ptr<Room> b1 = std::make_shared<Room>(1.0f, 1.0f, -4.0f, -1.0f);
+        std::shared_ptr<Room> c1 = std::make_shared<Room>(1.0f, 1.0f, -2.0f, -3.0f);
 
         Triangle t1(a1, b1, c1);
 
-        std::shared_ptr<Room> a2 = std::make_shared<Room>(1, -1, -2, 3);
-        std::shared_ptr<Room> b2 = std::make_shared<Room>(1, 1, 0, 1);
-        std::shared_ptr<Room> c2 = std::make_shared<Room>(-1, -1, 0, -2);
+        std::shared_ptr<Room> a2 = std::make_shared<Room>(1.0f, -1.0f, -2.0f, 3.0f);
+        std::shared_ptr<Room> b2 = std::make_shared<Room>(1.0f, 1.0f, 0.0f, 1.0f);
+        std::shared_ptr<Room> c2 = std::make_shared<Room>(-1.0f, -1.0f, 0.0f, -2.0f);
 
         Triangle t2(a2, b2, c2);
 
@@ -44,9 +52,9 @@ TEST_SUITE("Test Triangle")
 
     TEST_CASE("Test HasEdge")
     {
-        std::shared_ptr<Room> a1 = std::make_shared<Room>(1, 1, -3, 3);
-        std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
-        std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
+        std::shared_ptr<Room> a1 = std::make_shared<Room>(1.0f, 1.0f, -3.0f, 3.0f);
+        std::shared_ptr<Room> b1 = std::make_shared<Room>(1.0f, 1.0f, -4.0f, -1.0f);
+        std::shared_ptr<Room> c1 = std::make_shared<Room>(1.0f, 1.0f, -2.0f, -3.0f);
 
         Edge e11 = Edge(a1, b1);
         Edge e12 = Edge(b1, c1);
@@ -54,9 +62,9 @@ TEST_SUITE("Test Triangle")
 
         Triangle t1(a1, b1, c1);
 
-        std::shared_ptr<Room> a2 = std::make_shared<Room>(1, -1, -2, 3);
-        std::shared_ptr<Room> b2 = std::make_shared<Room>(1, 1, 0, 1);
-        std::shared_ptr<Room> c2 = std::make_shared<Room>(-1, -1, 0, -2);
+        std::shared_ptr<Room> a2 = std::make_shared<Room>(1.0f, -1.0f, -2.0f, 3.0f);
+        std::shared_ptr<Room> b2 = std::make_shared<Room>(1.0f, 1.0f, 0.0f, 1.0f);
+        std::shared_ptr<Room> c2 = std::make_shared<Room>(-1.0f, -1.0f, 0.0f, -2.0f);
 
         Edge e21 = Edge(a2, b2);
         Edge e22 = Edge(c2, b2);
@@ -79,9 +87,9 @@ TEST_SUITE("Test Triangle")
 
     TEST_CASE("Test GetVerts")
     {
-        std::shared_ptr<Room> a1 = std::make_shared<Room>(1, 1, -3, 3);
-        std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
-        std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
+        std::shared_ptr<Room> a1 = std::make_shared<Room>(1.0f, 1.0f, -3.0f, 3.0f);
+        std::shared_ptr<Room> b1 = std::make_shared<Room>(1.0f, 1.0f, -4.0f, -1.0f);
+        std::shared_ptr<Room> c1 = std::make_shared<Room>(1.0f, 1.0f, -2.0f, -3.0f);
 
         Triangle t1(a1, b1, c1);
 
@@ -98,9 +106,9 @@ TEST_SUITE("Test Triangle")
 
     TEST_CASE("Test GetEdges")
     {
-        std::shared_ptr<Room> a1 = std::make_shared<Room>(1, 1, -3, 3);
-        std::shared_ptr<Room> b1 = std::make_shared<Room>(1, 1, -4, -1);
-        std::shared_ptr<Room> c1 = std::make_shared<Room>(1, 1, -2, -3);
+        std::shared_ptr<Room> a1 = std::make_shared<Room>(1.0f, 1.0f, -3.0f, 3.0f);
+        std::shared_ptr<Room> b1 = std::make_shared<Room>(1.0f, 1.0f, -4.0f, -1.0f);
+        std::shared_ptr<Room> c1 = std::make_shared<Room>(1.0f, 1.0f, -2.0f, -3.0f);
 
         Edge e1 = Edge(a1, b1);
         Edge e2 = Edge(b1, c1);

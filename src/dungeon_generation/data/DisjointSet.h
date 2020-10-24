@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 template <typename T>
 class DisjointSet
 {
@@ -9,8 +11,8 @@ public:
 
     DisjointSet<T>* Find();
 
-    bool operator==(const DisjointSet<T>& other);
-    bool operator!=(const DisjointSet<T>& other);
+    bool operator==(const DisjointSet<T>& other) const;
+    bool operator!=(const DisjointSet<T>& other) const;
 
     // Union
     DisjointSet<T>& operator+=(DisjointSet<T>& other);
@@ -67,7 +69,7 @@ Requires type T to have the equality operator defined.
 @return True if this equals other
 */
 template <typename T>
-inline bool DisjointSet<T>::operator==(const DisjointSet<T>& other)
+inline bool DisjointSet<T>::operator==(const DisjointSet<T>& other) const
 {
     return this->value == other.value && this->pParent == other.pParent;
 }
@@ -80,7 +82,7 @@ Negates the result of the equality operator.
 @return True if this doesn't equal other
 */
 template <typename T>
-inline bool DisjointSet<T>::operator!=(const DisjointSet<T>& other)
+inline bool DisjointSet<T>::operator!=(const DisjointSet<T>& other) const
 {
     return !operator==(other);
 }

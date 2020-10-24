@@ -134,11 +134,11 @@ bool Room::CloseEnoughX(const Room& other)
     const float threshold = 5.0f;
     if (x > other.x)
     {
-        return (x - width) - (other.x - width) < threshold;
+        return (other.x + other.width) - (x - width) > threshold;
     }
     else
     {
-        return (other.x - width) - (x - width) < threshold;
+        return (x - width) - (other.x - other.width) > threshold;
     }
 }
 
@@ -153,11 +153,11 @@ bool Room::CloseEnoughY(const Room& other)
     const float threshold = 5.0f;
     if (y > other.y)
     {
-        return (y - height) - (other.y - height) < threshold;
+        return (other.y - other.height) - (y - height) > threshold;
     }
     else
     {
-        return (other.y - height) - (y - height) < threshold;
+        return (y - height) - (other.y - other.height) > threshold;
     }
 }
 

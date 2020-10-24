@@ -162,6 +162,7 @@ Array<T>::Array(const Array<T>& other)
     : data(new T[other.dataLength])
     , dataLength(other.dataLength)
 {
+    numElements = other.numElements;
     std::copy(other.begin(), other.end(), data);
 }
 
@@ -178,8 +179,10 @@ Array<T>::Array(Array<T>&& other)
 {
     data = other.data;
     dataLength = other.dataLength;
+    numElements = other.numElements;
     other.data = NULL;
     other.dataLength = 0;
+    other.numElements = 0;
 }
 
 /*
@@ -210,6 +213,7 @@ Array<T>& Array<T>::operator=(const Array<T>& other)
 
         data = new T[other.dataLength];
         dataLength = other.dataLength;
+        numElements = other.numElements;
         std::copy(other.begin(), other.end(), data);
     }
 
@@ -234,8 +238,10 @@ inline Array<T>& Array<T>::operator=(Array<T>&& other)
         delete[] data;
         data = other.data;
         dataLength = other.dataLength;
+        numElements = other.numElements;
         other.data = NULL;
         other.dataLength = 0;
+        other.numElements = 0;
     }
 
     return *this;

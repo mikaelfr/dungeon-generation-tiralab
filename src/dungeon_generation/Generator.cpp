@@ -239,9 +239,9 @@ void Generator::PreGraphRooms()
     float midY = (maxY + minY) / 2;
 
     // Constructing "broken" rooms with width and height of -1
-    std::shared_ptr<Room> r1 = std::make_shared<Room>(-1, -1, midX - 20 * maxExtent, midY - maxExtent);
-    std::shared_ptr<Room> r2 = std::make_shared<Room>(-1, -1, midX, midY + 20 * maxExtent);
-    std::shared_ptr<Room> r3 = std::make_shared<Room>(-1, -1, midX + 20 * maxExtent, midY - maxExtent);
+    std::shared_ptr<Room> r1 = std::make_shared<Room>(-1.0f, -1.0f, midX - 20 * maxExtent, midY - maxExtent);
+    std::shared_ptr<Room> r2 = std::make_shared<Room>(-1.0f, -1.0f, midX, midY + 20 * maxExtent);
+    std::shared_ptr<Room> r3 = std::make_shared<Room>(-1.0f, -1.0f, midX + 20 * maxExtent, midY - maxExtent);
 
     triangles.Add(std::make_shared<Triangle>(r1, r2, r3));
 }
@@ -385,12 +385,12 @@ void Generator::GenerateHallways()
     {
         if (e.key->CloseEnoughX(*e.value))
         {
-            float xMid = (e.key->x - e.value->x) / 2;
+            float xMid = (e.key->x + e.value->x) / 2;
             lines.Add(Line(Vec2(xMid, e.key->y), Vec2(xMid, e.value->y)));
         }
         else if (e.key->CloseEnoughY(*e.value))
         {
-            float yMid = (e.key->y - e.value->y) / 2;
+            float yMid = (e.key->y + e.value->y) / 2;
             lines.Add(Line(Vec2(e.key->x, yMid), Vec2(e.value->x, yMid)));
         }
         else
