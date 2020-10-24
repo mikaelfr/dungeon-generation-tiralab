@@ -167,7 +167,7 @@ jobs:
        
        # Test for memory leaks
        - make dungeon_generator
-       - valgrind --leak-check=full --track-origins=yes ./src/dungeon_generator --headless
+       - valgrind --leak-check=full --track-origins=yes ./src/dungeon_generator 12345 --headless
        
     - stage: Windows
       name: "Build for Windows"
