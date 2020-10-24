@@ -1,6 +1,8 @@
 # Usage
 ## Running
-Simply running the executable opens up a window where the dungeon generation is visualized. Pressing the right arrow button advances the generation to the next step. At the end of the generation, the fully generated dungeon is printed into the console in json format.
+`dungeon_generator 12345 [--headless]`
+
+Simply running the executable with an int param (the seed) opens up a window where the dungeon generation is visualized. Pressing the right arrow button advances the generation to the next step. At the end of the generation, the fully generated dungeon is printed into the console in json format.
 
 Running the executable with `--headless` option runs the dungeon generation through in all in one go and prints out the result into the console in json format.
 
