@@ -12,7 +12,7 @@ struct Tuple
     Default constructor
     T and U will end up with default values
     */
-    Tuple() 
+    Tuple()
     {
         key = T();
         value = U();

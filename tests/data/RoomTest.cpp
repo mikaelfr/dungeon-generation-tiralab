@@ -57,4 +57,39 @@ TEST_SUITE("Test Room")
         CHECK(Vec2(10, 10) == r1);
         CHECK(Vec2(5, -5) == r2);
     }
+
+    TEST_CASE("Test collision with line")
+    {
+        Room r1(20, 30, 10, 10);
+        Room r2(10, 10, 0, 0);
+        Room r3(20, 40, 100, 200);
+
+        Tuple<Vec2, Vec2> l1(Vec2(-20, 0), Vec2(20, 0));
+        Tuple<Vec2, Vec2> l2(Vec2(0, -20), Vec2(0, 20));
+        Tuple<Vec2, Vec2> l3(Vec2(0, 200), Vec2(400, 200));
+
+        CHECK(r1.IsColliding(l1));
+        CHECK(r1.IsColliding(l2));
+        CHECK(!r1.IsColliding(l3));
+
+        CHECK(r2.IsColliding(l1));
+        CHECK(r2.IsColliding(l2));
+        CHECK(!r2.IsColliding(l3));
+
+        CHECK(!r3.IsColliding(l1));
+        CHECK(!r3.IsColliding(l2));
+        CHECK(r3.IsColliding(l3));
+    }
+
+    TEST_CASE("Test close enough")
+    {
+        Room r1(20, 30, 10, 10);
+        Room r2(10, 10, 0, 0);
+        Room r3(20, 40, 100, 200);
+
+        CHECK(r1.CloseEnoughX(r2));
+        CHECK(r1.CloseEnoughY(r2));
+        CHECK(!r1.CloseEnoughX(r3));
+        CHECK(!r1.CloseEnoughY(r3));
+    }
 }
